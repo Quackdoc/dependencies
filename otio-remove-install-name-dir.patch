@@ -1,0 +1,24 @@
+diff --git a/src/opentime/CMakeLists.txt b/src/opentime/CMakeLists.txt
+index 9a7ce49..db77169 100644
+--- a/src/opentime/CMakeLists.txt
++++ b/src/opentime/CMakeLists.txt
+@@ -26,7 +26,6 @@ set_target_properties(opentime PROPERTIES
+ 
+ if(APPLE)
+     set_target_properties(opentime PROPERTIES 
+-        INSTALL_NAME_DIR "@loader_path"
+         MACOSX_RPATH ON)
+ endif()
+ 
+diff --git a/src/opentimelineio/CMakeLists.txt b/src/opentimelineio/CMakeLists.txt
+index 87cada3..8c346a9 100644
+--- a/src/opentimelineio/CMakeLists.txt
++++ b/src/opentimelineio/CMakeLists.txt
+@@ -91,7 +91,6 @@ set_target_properties(opentimelineio PROPERTIES
+ 
+ if(APPLE)
+     set_target_properties(opentimelineio PROPERTIES 
+-        INSTALL_NAME_DIR "@loader_path"
+         MACOSX_RPATH ON)
+ endif()
+ 
