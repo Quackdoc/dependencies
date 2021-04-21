@@ -1,0 +1,12 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 468f1a3..6ad77e9 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -153,3 +153,7 @@ if (NOT WIN32)
+     DESTINATION lib/pkgconfig
+   )
+ endif (NOT WIN32)
++
++if (APPLE)
++  set_target_properties(modplug PROPERTIES MACOSX_RPATH ON)
++endif(APPLE)
