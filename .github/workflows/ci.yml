@@ -449,6 +449,11 @@ jobs:
           echo "INSTALL_DIR=/opt/olive-editor" >> $GITHUB_ENV
           echo -e "/opt/olive-editor\n/opt/olive-editor/lib\n/opt/olive-editor/include\n$(cat $GITHUB_PATH)" > $GITHUB_PATH
 
+      # HACK: Don't use pre-installed Homebrew 3.0.10 from GitHub's virtual environment
+      # Newer versions download packages from GitHub instead of Bintray which is shutting down
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
       - name: Install Ninja
         shell: bash
         run: |
