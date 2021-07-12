@@ -4,7 +4,6 @@ on: push
 
 env:
   DOWNLOAD_TOOL: curl -fLOSs --retry 2 --retry-delay 60
-  BUILD_TYPE: RelWithDebInfo
 
   QT_VERSION: 5.15.2
   ZLIB_VERSION: 1.2.11
@@ -28,8 +27,15 @@ env:
 
 jobs:
   windows:
-    name: Windows
+    strategy:
+      matrix:
+        include:
+          - type: RelWithDebInfo
+          - type: Debug
+    name: Windows ${{ matrix.type }}
     runs-on: windows-latest
+    env:
+      BUILD_TYPE: ${{ matrix.type }}
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2
@@ -435,6 +441,7 @@ jobs:
       CXXFLAGS: "-mmacosx-version-min=10.13"
       LDFLAGS: "-mmacosx-version-min=10.13"
       MACOSX_DEPLOYMENT_TARGET: 10.13
+      BUILD_TYPE: ${{ matrix.type }}
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2
