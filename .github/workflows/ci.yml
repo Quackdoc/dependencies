@@ -82,8 +82,8 @@ jobs:
         run: |
           git clone --branch $PORTAUDIO_VERSION --depth 1 https://github.com/PortAudio/portaudio.git
           cd portaudio
-          mkdir build
-          cd build
+          mkdir b
+          cd b
           cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
