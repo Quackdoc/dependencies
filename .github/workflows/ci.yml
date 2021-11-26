@@ -228,9 +228,9 @@ jobs:
         shell: bash
         working-directory: ${{ runner.workspace }}
         run: |
-          $DOWNLOAD_TOOL https://dl.bintray.com/boostorg/release/1.75.0/source/boost_1_75_0.tar.gz
-          tar xzf boost_1_75_0.tar.gz
-          cd boost_1_75_0
+          $DOWNLOAD_TOOL https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.gz
+          tar xzf boost_1_77_0.tar.gz
+          cd boost_1_77_0
           ./bootstrap.sh
           ./b2 install address-model=64 variant=release link=shared --prefix=$INSTALL_DIR --with-filesystem --with-system --with-thread
 
