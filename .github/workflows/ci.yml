@@ -25,6 +25,7 @@ env:
   LIBWEBP_VERSION: v1.2.0
   LIBVPX_VERSION: v1.10.0
   PORTAUDIO_VERSION: v19.7.0
+  OTIO_VERSION: v0.14
 
 jobs:
   mac:
@@ -318,7 +319,7 @@ jobs:
         shell: bash
         working-directory: ${{ runner.workspace }}
         run: |
-          git clone --depth 1 https://github.com/PixarAnimationStudios/OpenTimelineIO.git
+          git clone --depth 1 --branch $OTIO_VERSION https://github.com/PixarAnimationStudios/OpenTimelineIO.git
           cd OpenTimelineIO
 
           # Fixes linking on macOS
