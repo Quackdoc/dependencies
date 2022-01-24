@@ -34,8 +34,8 @@ jobs:
         include:
           - arch: x86_64
             os: macos-10.15
-          #- arch: arm64
-          #  os: macos-11.0
+          - arch: arm64
+            os: macos-11.0
     name: macOS (${{ matrix.arch }})
     runs-on: ${{ matrix.os }}
     env:
