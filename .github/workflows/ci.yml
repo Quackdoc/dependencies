@@ -223,7 +223,8 @@ jobs:
             --enable-bzlib \
             --enable-libmodplug \
             $EXTRA_FFMPEG_ARGS \
-            --disable-avx512
+            --disable-avx512 || true
+          cat ffbuild/config.log
           make
           make install
 
