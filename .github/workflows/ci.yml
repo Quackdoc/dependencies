@@ -40,11 +40,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       ARCH: ${{ matrix.arch }}
-      CFLAGS: "-mmacosx-version-min=10.13"
-      CXXFLAGS: "-mmacosx-version-min=10.13"
-      LDFLAGS: "-mmacosx-version-min=10.13"
+      CFLAGS: "-mmacosx-version-min=10.13 -arch ${{ matrix.arch }}"
+      CXXFLAGS: "-mmacosx-version-min=10.13 -arch ${{ matrix.arch }}"
+      LDFLAGS: "-mmacosx-version-min=10.13 -arch ${{ matrix.arch }}"
       MACOSX_DEPLOYMENT_TARGET: 10.13
-      BUILD_TYPE: ${{ matrix.type }}
+      BUILD_TYPE: Release
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2
@@ -115,7 +115,7 @@ jobs:
         run: |
           git clone --branch $X265_VERSION --depth 1 https://bitbucket.org/multicoreware/x265_git
           cd x265_git/build/linux
-          cmake -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_OSX_ARCHITECTURES=$ARCH ../../source
+          cmake -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_ASM_COMPILER=nasm ../../source
           ninja
           ninja install
 
@@ -130,7 +130,14 @@ jobs:
           # Patch to remove legacy undefined export
           sed -i '' '/lame_init_old/d' include/libmp3lame.sym
 
-          ./configure --enable-shared --disable-static --prefix="$INSTALL_DIR"
+          if [ "$ARCH" == "arm64" ]
+          then
+            HOST=aarch64
+          else
+            HOST=x86_64
+          fi
+
+          ./configure --enable-shared --disable-static --prefix="$INSTALL_DIR" --host=$HOST-apple-darwin
           make
           make install
 
@@ -152,7 +159,7 @@ jobs:
         run: |
           git clone --branch $LIBVPX_VERSION --depth 1 https://chromium.googlesource.com/webm/libvpx.git
           cd libvpx
-          ./configure --prefix="$INSTALL_DIR" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm
+          ./configure --prefix="$INSTALL_DIR" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm --host=$ARCH-darwin20-gcc
           make
           make install
 
@@ -184,6 +191,7 @@ jobs:
           export PKG_CONFIG_PATH=$INSTALL_DIR/lib/pkgconfig
           export PATH=/c/Strawberry/perl/bin:$PATH
           ./configure \
+            --arch=$ARCH \
             --prefix=$INSTALL_DIR \
             --enable-shared \
             --disable-static \
@@ -233,7 +241,15 @@ jobs:
           tar xzf boost_1_77_0.tar.gz
           cd boost_1_77_0
           ./bootstrap.sh
-          ./b2 install address-model=64 variant=release link=shared --prefix=$INSTALL_DIR --with-filesystem --with-system --with-thread
+
+          if [ "$ARCH" == "arm64" ]
+          then
+            CPU=arm
+          else
+            CPU=x86
+          fi
+
+          ./b2 install address-model=64 architecture=$CPU variant=release link=shared --prefix=$INSTALL_DIR --with-filesystem --with-system --with-thread
 
       - name: Build libpng
         shell: bash
@@ -283,7 +299,15 @@ jobs:
           tar xzf LibRaw-$LIBRAW_VERSION.tar.gz
           cd LibRaw-$LIBRAW_VERSION
           autoreconf -i
-          ./configure --prefix="$INSTALL_DIR"
+
+          if [ "$ARCH" == "arm64" ]
+          then
+            HOST=aarch64
+          else
+            HOST=x86_64
+          fi
+
+          ./configure --prefix="$INSTALL_DIR" --host=$HOST-apple-darwin
           make
           make install
 
@@ -293,10 +317,11 @@ jobs:
         run: |
           git clone --branch $LIBWEBP_VERSION --depth 1 https://chromium.googlesource.com/webm/libwebp
           cd libwebp
-          ./autogen.sh
-          ./configure --prefix="$INSTALL_DIR"
-          make
-          make install
+          mkdir build
+          cd build
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          ninja
+          ninja install
 
       - name: Build OpenImageIO
         shell: bash
