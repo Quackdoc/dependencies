@@ -201,6 +201,12 @@ jobs:
           export LIB=$LIB\;$INSTALL_DIR/lib\;$INSTALL_DIR/lib/x64
           export PKG_CONFIG_PATH=$INSTALL_DIR/lib/pkgconfig
           export PATH=/c/Strawberry/perl/bin:$PATH
+
+          if [ "$ARCH" == "arm64" ]
+          then
+            EXTRA_FFMPEG_ARGS="--enable-cross-compile"
+          fi
+
           ./configure \
             --arch=$ARCH \
             --prefix=$INSTALL_DIR \
@@ -216,6 +222,7 @@ jobs:
             --enable-libx265 \
             --enable-bzlib \
             --enable-libmodplug \
+            $EXTRA_FFMPEG_ARGS \
             --disable-avx512
           make
           make install
