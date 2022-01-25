@@ -197,8 +197,6 @@ jobs:
           $DOWNLOAD_TOOL https://www.ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.xz
           tar xf ffmpeg-$FFMPEG_VERSION.tar.xz
           cd ffmpeg-$FFMPEG_VERSION
-          export INCLUDE=$INCLUDE\;$INSTALL_DIR/include
-          export LIB=$LIB\;$INSTALL_DIR/lib\;$INSTALL_DIR/lib/x64
           export PKG_CONFIG_PATH=$INSTALL_DIR/lib/pkgconfig
 
           if [ "$ARCH" == "arm64" ]
@@ -208,6 +206,9 @@ jobs:
 
           ./configure \
             --arch=$ARCH \
+            --target-os=darwin \
+            --extra-cflags="-arch $ARCH" \
+            --extra-ldflags="-arch $ARCH" \
             --prefix=$INSTALL_DIR \
             --enable-shared \
             --disable-static \
