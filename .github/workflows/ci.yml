@@ -95,6 +95,7 @@ jobs:
           cd x265_git
           mkdir b
           cd b
+          echo cmake -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_ASM_COMPILER=nasm ../source
           cmake -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_ASM_COMPILER=nasm ../source
           ninja
           ninja install
