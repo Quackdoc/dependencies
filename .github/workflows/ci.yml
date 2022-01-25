@@ -85,7 +85,14 @@ jobs:
           cd x265_git
           mkdir b
           cd b
-          cmake ../source -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_OSX_ARCHITECTURES=$ARCH -DNATIVE_BUILD=OFF -DCROSS_COMPILE_ARM64=ON -DCMAKE_SYSTEM_PROCESSOR=$ARCH -DCMAKE_ASM_COMPILER=nasm
+
+          if [ "$ARCH" == "arm64" ]
+          then
+            cmake ../source -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/x265-arm64-crosscompile.cmake
+          else
+            cmake ../source -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR"
+          fi
+
           ninja
           ninja install
 
