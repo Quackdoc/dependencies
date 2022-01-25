@@ -88,7 +88,7 @@ jobs:
 
           if [ "$ARCH" == "arm64" ]
           then
-            cmake ../source -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/x265-arm64-crosscompile.cmake
+            cmake ../source -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/x265-arm64-crosscompile.cmake -DCMAKE_ASM_COMPILER=nasm
           else
             cmake ../source -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR"
           fi
