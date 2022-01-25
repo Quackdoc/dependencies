@@ -23,7 +23,7 @@ env:
   OPENSSL_VERSION: "OpenSSL_1_1_1j"
   X265_VERSION: 3.5
   LIBWEBP_VERSION: v1.2.0
-  LIBVPX_VERSION: v1.10.0
+  LIBVPX_VERSION: v1.11.0
   PORTAUDIO_VERSION: v19.7.0
   OTIO_VERSION: v0.14
 
@@ -159,6 +159,7 @@ jobs:
         run: |
           git clone --branch $LIBVPX_VERSION --depth 1 https://chromium.googlesource.com/webm/libvpx.git
           cd libvpx
+          ./configure --help
           ./configure --prefix="$INSTALL_DIR" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm --host=$ARCH-darwin20-gcc
           make
           make install
