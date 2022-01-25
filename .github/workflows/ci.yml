@@ -148,7 +148,7 @@ jobs:
             HOST=x86_64
           fi
 
-          ./configure --enable-shared --disable-static --prefix="$INSTALL_DIR" --host=$HOST-apple-darwin
+          ./configure --enable-shared --disable-static --prefix="$INSTALL_DIR" --host=$HOST-apple-darwin CFLAGS="-arch $ARCH"
           make
           make install
 
@@ -200,7 +200,6 @@ jobs:
           export INCLUDE=$INCLUDE\;$INSTALL_DIR/include
           export LIB=$LIB\;$INSTALL_DIR/lib\;$INSTALL_DIR/lib/x64
           export PKG_CONFIG_PATH=$INSTALL_DIR/lib/pkgconfig
-          export PATH=/c/Strawberry/perl/bin:$PATH
 
           if [ "$ARCH" == "arm64" ]
           then
