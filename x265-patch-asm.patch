@@ -1,0 +1,24 @@
+diff --git a/source/CMakeLists.txt b/source/CMakeLists.txt
+index ad46614d2..fb16479da 100755
+--- a/source/CMakeLists.txt
++++ b/source/CMakeLists.txt
+@@ -548,8 +548,7 @@ if((MSVC_IDE OR XCODE OR GCC) AND ENABLE_ASSEMBLY)
+             list(APPEND ASM_OBJS ${ASM}.${SUFFIX})
+             add_custom_command(
+                 OUTPUT ${ASM}.${SUFFIX}
+-                COMMAND ${CMAKE_CXX_COMPILER}
+-                ARGS ${ARM_ARGS} -c ${ASM_SRC} -o ${ASM}.${SUFFIX}
++                COMMAND ${NASM_EXECUTABLE} ARGS ${NASM_FLAGS} ${ASM_SRC} -o ${ASM}.${SUFFIX}
+                 DEPENDS ${ASM_SRC})
+         endforeach()
+ 	elseif(ARM64 OR CROSS_COMPILE_ARM64)
+@@ -561,8 +560,7 @@ if((MSVC_IDE OR XCODE OR GCC) AND ENABLE_ASSEMBLY)
+             list(APPEND ASM_OBJS ${ASM}.${SUFFIX})
+             add_custom_command(
+                 OUTPUT ${ASM}.${SUFFIX}
+-                COMMAND ${CMAKE_CXX_COMPILER}
+-                ARGS ${ARM_ARGS} -c ${ASM_SRC} -o ${ASM}.${SUFFIX}
++                COMMAND ${NASM_EXECUTABLE} ARGS ${NASM_FLAGS} ${ASM_SRC} -o ${ASM}.${SUFFIX}
+                 DEPENDS ${ASM_SRC})
+         endforeach()
+     elseif(X86)
