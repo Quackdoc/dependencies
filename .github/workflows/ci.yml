@@ -207,8 +207,8 @@ jobs:
           ./configure \
             --arch=$ARCH \
             --target-os=darwin \
-            --extra-cflags="-arch $ARCH" \
-            --extra-ldflags="-arch $ARCH" \
+            --extra-cflags="-I$INSTALL_DIR/include -arch $ARCH" \
+            --extra-ldflags="-L$INSTALL_DIR/lib -arch $ARCH" \
             --prefix=$INSTALL_DIR \
             --enable-shared \
             --disable-static \
