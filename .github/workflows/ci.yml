@@ -77,6 +77,28 @@ jobs:
         run: |
           brew install yasm
 
+      - name: Build libvpx
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          git clone --branch $LIBVPX_VERSION --depth 1 https://chromium.googlesource.com/webm/libvpx.git
+          cd libvpx
+          ./configure --prefix="$INSTALL_DIR" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm --host=$ARCH-darwin20-gcc
+          make
+          make install
+
+      - name: Build libx265
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          git clone --branch $X265_VERSION --depth 1 https://bitbucket.org/multicoreware/x265_git
+          cd x265_git
+          mkdir b
+          cd b
+          cmake -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_ASM_COMPILER=nasm ../source
+          ninja
+          ninja install
+
       - name: Build PortAudio
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -85,7 +107,7 @@ jobs:
           cd portaudio
           mkdir b
           cd b
-          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
 
@@ -108,18 +130,6 @@ jobs:
           ./configure --prefix="$INSTALL_DIR" --enable-shared --disable-cli --host=$ARCH-darwin
           make
           make install
-
-      - name: Build libx265
-        shell: bash
-        working-directory: ${{ runner.workspace }}
-        run: |
-          git clone --branch $X265_VERSION --depth 1 https://bitbucket.org/multicoreware/x265_git
-          cd x265_git
-          mkdir b
-          cd b
-          cmake -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_ASM_COMPILER=nasm ../source
-          ninja
-          ninja install
 
       - name: Build libmp3lame
         shell: bash
@@ -151,28 +161,9 @@ jobs:
           cd opus
           mkdir build
           cd build
-          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
-
-      - name: Build libvpx
-        shell: bash
-        working-directory: ${{ runner.workspace }}
-        run: |
-          git clone --branch $LIBVPX_VERSION --depth 1 https://chromium.googlesource.com/webm/libvpx.git
-          cd libvpx
-          ./configure --help
-
-          if [ "$ARCH" == "arm64" ]
-          then
-            HOST=arm64-darwin20-gcc
-          else
-            HOST=x86_64-darwin19-gcc
-          fi
-
-          ./configure --prefix="$INSTALL_DIR" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm --host=
-          make
-          make install
 
       - name: Build libmodplug
         shell: bash
@@ -186,7 +177,7 @@ jobs:
 
           mkdir build
           cd build
-          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DBUILD_SHARED_LIBS=ON -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          cmake .. -G Ninja -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DBUILD_SHARED_LIBS=ON -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
 
@@ -228,7 +219,7 @@ jobs:
           cd openexr
           mkdir build
           cd build
-          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DPYILMBASE_ENABLE=OFF -DOPENEXR_VIEWERS_ENABLE=OFF -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DPYILMBASE_ENABLE=OFF -DOPENEXR_VIEWERS_ENABLE=OFF -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
 
@@ -240,7 +231,7 @@ jobs:
           cd OpenColorIO
           mkdir build
           cd build
-          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOCIO_BUILD_PYTHON=OFF -DOCIO_BUILD_APPS=OFF -DOCIO_BUILD_TESTS=OFF -DOCIO_BUILD_GPU_TESTS=OFF -DOCIO_BUILD_DOCS=OFF -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOCIO_BUILD_PYTHON=OFF -DOCIO_BUILD_APPS=OFF -DOCIO_BUILD_TESTS=OFF -DOCIO_BUILD_GPU_TESTS=OFF -DOCIO_BUILD_DOCS=OFF -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
 
@@ -271,7 +262,7 @@ jobs:
           cd libpng-$LIBPNG_VERSION
           mkdir build
           cd build
-          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
 
@@ -284,7 +275,7 @@ jobs:
           cd tiff-$TIFF_VERSION
           mkdir b
           cd b
-          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
 
@@ -297,7 +288,7 @@ jobs:
           cd libjpeg-turbo-$JPEGTURBO_VERSION
           mkdir build
           cd build
-          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
 
@@ -330,7 +321,7 @@ jobs:
           cd libwebp
           mkdir build
           cd build
-          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
 
@@ -347,7 +338,7 @@ jobs:
 
           mkdir build
           cd build
-          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DUSE_PYTHON=OFF -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DUSE_PYTHON=OFF -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
 
@@ -363,7 +354,7 @@ jobs:
 
           mkdir build
           cd build
-          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOTIO_PYTHON_INSTALL=OFF -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOTIO_PYTHON_INSTALL=OFF -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
 
