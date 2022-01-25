@@ -224,8 +224,7 @@ jobs:
             --enable-bzlib \
             --enable-libmodplug \
             $EXTRA_FFMPEG_ARGS \
-            --disable-avx512 || true
-          cat ffbuild/config.log
+            --disable-avx512
           make
           make install
 
@@ -280,7 +279,7 @@ jobs:
           git apply $GITHUB_WORKSPACE/png-osx-arm64.patch
           mkdir build
           cd build
-          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH -DPNG_ARM_NEON=ON
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH -DPNG_ARM_NEON=on
           ninja
           ninja install
 
