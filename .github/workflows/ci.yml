@@ -77,16 +77,6 @@ jobs:
         run: |
           brew install yasm
 
-      - name: Build libvpx
-        shell: bash
-        working-directory: ${{ runner.workspace }}
-        run: |
-          git clone --branch $LIBVPX_VERSION --depth 1 https://chromium.googlesource.com/webm/libvpx.git
-          cd libvpx
-          ./configure --prefix="$INSTALL_DIR" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm --target=$ARCH-darwin20-gcc
-          make
-          make install
-
       - name: Build libx265
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -95,7 +85,7 @@ jobs:
           cd x265_git
           mkdir b
           cd b
-          cmake ../source -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_APPLE_SILICON_PROCESSOR=$ARCH -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_SYSTEM_PROCESSOR=$ARCH -DCMAKE_ASM_COMPILER=nasm
+          cmake ../source -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_OSX_ARCHITECTURES=$ARCH -DNATIVE_BUILD=OFF -DCROSS_COMPILE_ARM64=ON -DCMAKE_SYSTEM_PROCESSOR=$ARCH -DCMAKE_ASM_COMPILER=nasm
           ninja
           ninja install
 
@@ -150,6 +140,16 @@ jobs:
           fi
 
           ./configure --enable-shared --disable-static --prefix="$INSTALL_DIR" --host=$HOST-apple-darwin
+          make
+          make install
+
+      - name: Build libvpx
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          git clone --branch $LIBVPX_VERSION --depth 1 https://chromium.googlesource.com/webm/libvpx.git
+          cd libvpx
+          ./configure --prefix="$INSTALL_DIR" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm --target=$ARCH-darwin20-gcc
           make
           make install
 
