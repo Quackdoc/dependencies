@@ -160,7 +160,15 @@ jobs:
           git clone --branch $LIBVPX_VERSION --depth 1 https://chromium.googlesource.com/webm/libvpx.git
           cd libvpx
           ./configure --help
-          ./configure --prefix="$INSTALL_DIR" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm --host=$ARCH-darwin20-gcc
+
+          if [ "$ARCH" == "arm64" ]
+          then
+            HOST=arm64-darwin20-gcc
+          else
+            HOST=x86_64-darwin19-gcc
+          fi
+
+          ./configure --prefix="$INSTALL_DIR" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm --host=
           make
           make install
 
