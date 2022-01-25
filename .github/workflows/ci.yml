@@ -83,12 +83,12 @@ jobs:
         run: |
           git clone --branch $X265_VERSION --depth 1 https://bitbucket.org/multicoreware/x265_git
           cd x265_git
+          git apply $GITHUB_WORKSPACE/x265-patch-asm.patch
           mkdir b
           cd b
 
           if [ "$ARCH" == "arm64" ]
           then
-            git apply $GITHUB_WORKSPACE/x265-patch-asm.patch
             cmake ../source -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_TOOLCHAIN_FILE=$GITHUB_WORKSPACE/x265-arm64-crosscompile.cmake
           else
             cmake ../source -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR"
