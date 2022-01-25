@@ -114,8 +114,10 @@ jobs:
         working-directory: ${{ runner.workspace }}
         run: |
           git clone --branch $X265_VERSION --depth 1 https://bitbucket.org/multicoreware/x265_git
-          cd x265_git/build/linux
-          cmake -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_ASM_COMPILER=nasm ../../source
+          cd x265_git
+          mkdir b
+          cd b
+          cmake -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_ASM_COMPILER=nasm ../source
           ninja
           ninja install
 
