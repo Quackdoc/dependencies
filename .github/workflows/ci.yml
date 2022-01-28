@@ -26,6 +26,7 @@ env:
   LIBVPX_VERSION: v1.11.0
   PORTAUDIO_VERSION: v19.7.0
   OTIO_VERSION: v0.14
+  MODPLUG_VERSION: b7660b1d4fdec9ead25e8716c14cf77809861656
 
 jobs:
   mac:
@@ -179,7 +180,7 @@ jobs:
         shell: bash
         working-directory: ${{ runner.workspace }}
         run: |
-          git clone --depth 1 https://github.com/Konstanty/libmodplug.git
+          git clone --branch $MODPLUG_VERSION --depth 1 https://github.com/Konstanty/libmodplug.git
           cd libmodplug
 
           # Fix rpath on macOS

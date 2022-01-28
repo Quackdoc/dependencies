@@ -1,9 +1,9 @@
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 468f1a3..6ad77e9 100644
+index 505a540..249d3d4 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -153,3 +153,7 @@ if (NOT WIN32)
-     DESTINATION lib/pkgconfig
+@@ -152,3 +152,7 @@ if (NOT WIN32)
+      DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
    )
  endif (NOT WIN32)
 +
