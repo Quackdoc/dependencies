@@ -283,19 +283,6 @@ jobs:
           ninja
           ninja install
 
-      - name: Build libtiff
-        shell: bash
-        working-directory: ${{ runner.workspace }}
-        run: |
-          $DOWNLOAD_TOOL https://download.osgeo.org/libtiff/tiff-$TIFF_VERSION.tar.gz
-          tar xzf tiff-$TIFF_VERSION.tar.gz
-          cd tiff-$TIFF_VERSION
-          mkdir b
-          cd b
-          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
-          ninja
-          ninja install
-
       - name: Build libjpeg-turbo
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -305,6 +292,19 @@ jobs:
           cd libjpeg-turbo-$JPEGTURBO_VERSION
           mkdir build
           cd build
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          ninja
+          ninja install
+
+      - name: Build libtiff
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          $DOWNLOAD_TOOL https://download.osgeo.org/libtiff/tiff-$TIFF_VERSION.tar.gz
+          tar xzf tiff-$TIFF_VERSION.tar.gz
+          cd tiff-$TIFF_VERSION
+          mkdir b
+          cd b
           cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
