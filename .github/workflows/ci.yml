@@ -17,6 +17,7 @@ env:
   OCIO_VERSION: v2.0.0
   TIFF_VERSION: 4.3.0
   JPEGTURBO_VERSION: 2.1.2
+  GIF_VERSION: 5.2.1
   LIBRAW_VERSION: 0.20.2
   OIIO_VERSION: v2.3.11.0
   LIBPNG_VERSION: v1.6.37
@@ -78,6 +79,14 @@ jobs:
         shell: bash
         run: |
           brew install yasm
+
+      - name: Build giflib
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          $DOWNLOAD_TOOL https://downloads.sourceforge.net/project/giflib/giflib-$GIF_VERSION.tar.gz
+          cd giflib-$GIF_VERSION
+          make install CFLAGS="-arch $ARCH" LDFLAGS="-arch $ARCH" PREFIX=$INSTALL_DIR
 
       - name: Build libx265
         shell: bash
