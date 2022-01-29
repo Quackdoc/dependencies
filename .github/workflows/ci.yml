@@ -270,7 +270,7 @@ jobs:
             CPU=x86
           fi
 
-          ./b2 install address-model=64 architecture=$CPU variant=release link=shared --prefix=$INSTALL_DIR --with-filesystem --with-system --with-thread cxxflags="-arch $ARCH" linkflags="-arch $ARCH"
+          ./b2 install address-model=64 architecture=$CPU variant=release link=shared cxxflags="-arch $ARCH" linkflags="-arch $ARCH" --prefix=$INSTALL_DIR --with-filesystem --with-system --with-thread
 
       - name: Build libpng
         shell: bash
