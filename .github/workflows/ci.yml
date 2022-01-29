@@ -87,7 +87,9 @@ jobs:
           $DOWNLOAD_TOOL https://downloads.sourceforge.net/project/giflib/giflib-$GIF_VERSION.tar.gz
           tar xzf giflib-$GIF_VERSION.tar.gz
           cd giflib-$GIF_VERSION
-          make install CFLAGS="-arch $ARCH" LDFLAGS="-arch $ARCH" PREFIX=$INSTALL_DIR
+          $DOWNLOAD_TOOL https://sourceforge.net/p/giflib/bugs/_discuss/thread/4e811ad29b/c323/attachment/Makefile.patch
+          patch Makefile Makefile.patch
+          make install CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" PREFIX=$INSTALL_DIR
 
       - name: Build libx265
         shell: bash
