@@ -97,14 +97,29 @@ jobs:
           git clone --branch $QT_VERSION --depth 1 https://code.qt.io/qt/qt5.git
           cd qt5
           perl init-repository --module-subset=qtbase,qtsvg,qttools
-          CFLAGS="-mmacosx-version-min=10.13" CXXFLAGS="-mmacosx-version-min=10.13" LDFLAGS="-mmacosx-version-min=10.13" ./configure \
+
+          cd qtbase
+          git apply $GITHUB_WORKSPACE/qt5-include-cgcolorspace.patch
+
+          if [ "$ARCH" == "arm64" ]
+          then
+            cp -R mkspecs/macx-clang mkspecs/macx-clang-arm64
+            echo "QMAKE_APPLE_DEVICE_ARCHS=arm64" >> mkspecs/macx-clang-arm64/qmake.conf
+            EXTRA_QT_ARGS="-xplatform macx-clang-arm64"
+          fi
+
+          cd ..
+
+          ./configure \
             -opensource -confirm-license -opengl desktop -nomake examples -nomake tests \
             -prefix "$INSTALL_DIR" -release -ssl -openssl-linked \
             -I "$INSTALL_DIR/include" -L "$INSTALL_DIR/lib" \
-            QMAKE_APPLE_DEVICE_ARCHS=$ARCH
+            $EXTRA_QT_ARGS
           make
           make install
           cd ..
+
+          # Free up space
           rm -rf qt5
 
       - name: Build libx265
