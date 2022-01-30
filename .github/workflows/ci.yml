@@ -90,38 +90,6 @@ jobs:
           make depend
           make install
 
-      - name: Build Qt
-        shell: bash
-        working-directory: ${{ runner.workspace }}
-        run: |
-          git clone --branch $QT_VERSION --depth 1 https://code.qt.io/qt/qt5.git
-          cd qt5
-          perl init-repository --module-subset=qtbase,qtsvg,qttools
-
-          cd qtbase
-          git apply $GITHUB_WORKSPACE/qt5-include-cgcolorspace.patch
-
-          if [ "$ARCH" == "arm64" ]
-          then
-            cp -R mkspecs/macx-clang mkspecs/macx-clang-arm64
-            echo "QMAKE_APPLE_DEVICE_ARCHS=arm64" >> mkspecs/macx-clang-arm64/qmake.conf
-            EXTRA_QT_ARGS="-xplatform macx-clang-arm64"
-          fi
-
-          cd ..
-
-          ./configure \
-            -opensource -confirm-license -opengl desktop -nomake examples -nomake tests \
-            -prefix "$INSTALL_DIR" -release -ssl -openssl-linked \
-            -I "$INSTALL_DIR/include" -L "$INSTALL_DIR/lib" \
-            $EXTRA_QT_ARGS
-          make
-          make install
-          cd ..
-
-          # Free up space
-          rm -rf qt5
-
       - name: Build libx265
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -262,6 +230,8 @@ jobs:
             --disable-avx512
           make
           make install
+          cd ..
+          rm -rf ffmpeg-$FFMPEG_VERSION ffmpeg-$FFMPEG_VERSION.tar.xz
 
       - name: Build OpenEXR
         shell: bash
@@ -430,6 +400,38 @@ jobs:
           cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOTIO_PYTHON_INSTALL=OFF -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
+
+      - name: Build Qt
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          git clone --branch $QT_VERSION --depth 1 https://code.qt.io/qt/qt5.git
+          cd qt5
+          perl init-repository --module-subset=qtbase,qtsvg,qttools
+
+          cd qtbase
+          git apply $GITHUB_WORKSPACE/qt5-include-cgcolorspace.patch
+
+          if [ "$ARCH" == "arm64" ]
+          then
+            cp -R mkspecs/macx-clang mkspecs/macx-clang-arm64
+            echo "QMAKE_APPLE_DEVICE_ARCHS=arm64" >> mkspecs/macx-clang-arm64/qmake.conf
+            EXTRA_QT_ARGS="-xplatform macx-clang-arm64"
+          fi
+
+          cd ..
+
+          ./configure \
+            -opensource -confirm-license -opengl desktop -nomake examples -nomake tests \
+            -prefix "$INSTALL_DIR" -release -ssl -openssl-linked \
+            -I "$INSTALL_DIR/include" -L "$INSTALL_DIR/lib" \
+            $EXTRA_QT_ARGS
+          make
+          make install
+          cd ..
+
+          # Free up space
+          rm -rf qt5
 
       - name: Deploy
         shell: bash
