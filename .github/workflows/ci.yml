@@ -80,16 +80,32 @@ jobs:
         run: |
           brew install yasm
 
-      - name: Build giflib
+      - name: Build OpenSSL
         shell: bash
         working-directory: ${{ runner.workspace }}
         run: |
-          $DOWNLOAD_TOOL https://downloads.sourceforge.net/project/giflib/giflib-$GIF_VERSION.tar.gz
-          tar xzf giflib-$GIF_VERSION.tar.gz
-          cd giflib-$GIF_VERSION
-          $DOWNLOAD_TOOL https://sourceforge.net/p/giflib/bugs/_discuss/thread/4e811ad29b/c323/attachment/Makefile.patch
-          patch Makefile Makefile.patch
-          make install CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" PREFIX=$INSTALL_DIR
+          git clone --branch $OPENSSL_VERSION --depth 1 https://github.com/openssl/openssl.git
+          cd openssl
+          perl Configure darwin64-$ARCH-cc --prefix="$INSTALL_DIR" --openssldir="$INSTALL_DIR"
+          make depend
+          make install
+
+      - name: Build Qt
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          git clone --branch $QT_VERSION --depth 1 https://code.qt.io/qt/qt5.git
+          cd qt5
+          perl init-repository --module-subset=qtbase,qtsvg,qttools
+          CFLAGS="-mmacosx-version-min=10.13" CXXFLAGS="-mmacosx-version-min=10.13" LDFLAGS="-mmacosx-version-min=10.13" ./configure \
+            -opensource -confirm-license -opengl desktop -nomake examples -nomake tests \
+            -prefix "$INSTALL_DIR" -release -ssl -openssl-linked \
+            -I "$INSTALL_DIR/include" -L "$INSTALL_DIR/lib" \
+            QMAKE_APPLE_DEVICE_ARCHS=$ARCH
+          make
+          make install
+          cd ..
+          rm -rf qt5
 
       - name: Build libx265
         shell: bash
@@ -123,16 +139,6 @@ jobs:
           cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
-
-      - name: Build OpenSSL
-        shell: bash
-        working-directory: ${{ runner.workspace }}
-        run: |
-          git clone --branch $OPENSSL_VERSION --depth 1 https://github.com/openssl/openssl.git
-          cd openssl
-          perl Configure darwin64-$ARCH-cc --prefix="$INSTALL_DIR" --openssldir="$INSTALL_DIR"
-          make depend
-          make install
 
       - name: Build libx264
         shell: bash
@@ -365,6 +371,17 @@ jobs:
           make
           make install
 
+      - name: Build giflib
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          $DOWNLOAD_TOOL https://downloads.sourceforge.net/project/giflib/giflib-$GIF_VERSION.tar.gz
+          tar xzf giflib-$GIF_VERSION.tar.gz
+          cd giflib-$GIF_VERSION
+          $DOWNLOAD_TOOL https://sourceforge.net/p/giflib/bugs/_discuss/thread/4e811ad29b/c323/attachment/Makefile.patch
+          patch Makefile Makefile.patch
+          make install CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" PREFIX=$INSTALL_DIR
+
       - name: Build OpenImageIO
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -398,22 +415,6 @@ jobs:
           cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOTIO_PYTHON_INSTALL=OFF -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
-
-      - name: Build Qt
-        shell: bash
-        working-directory: ${{ runner.workspace }}
-        run: |
-          git clone --branch $QT_VERSION --depth 1 https://code.qt.io/qt/qt5.git
-          cd qt5
-          perl init-repository --module-subset=qtbase,qtsvg,qttools
-          ./configure -opensource -confirm-license -opengl desktop -nomake examples -nomake tests \
-            -prefix "$INSTALL_DIR" -release -ssl -openssl-linked \
-            -I "$INSTALL_DIR/include" -L "$INSTALL_DIR/lib" \
-            QMAKE_APPLE_DEVICE_ARCHS=$ARCH
-          make
-          make install
-          cd ..
-          rm -rf qt5
 
       - name: Deploy
         shell: bash
