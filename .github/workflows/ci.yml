@@ -366,6 +366,7 @@ jobs:
           $DOWNLOAD_TOOL https://sourceforge.net/p/giflib/bugs/_discuss/thread/4e811ad29b/c323/attachment/Makefile.patch
           patch Makefile Makefile.patch
           make install CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" PREFIX=$INSTALL_DIR
+          install_name_tool -id @rpath/libgif.dylib $INSTALL_DIR/lib/libgif.dylib
 
       - name: Build OpenImageIO
         shell: bash
