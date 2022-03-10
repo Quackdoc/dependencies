@@ -233,6 +233,19 @@ jobs:
           cd ..
           rm -rf ffmpeg-$FFMPEG_VERSION ffmpeg-$FFMPEG_VERSION.tar.xz
 
+      - name: Build Imath
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          # Use the same version as OpenEXR to keep them synchronized
+          git clone --branch $OPENEXR_VERSION --depth 1 https://github.com/AcademySoftwareFoundation/Imath.git
+          cd Imath
+          mkdir build
+          cd build
+          cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DPYTHON=OFF -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          ninja
+          ninja install
+
       - name: Build OpenEXR
         shell: bash
         working-directory: ${{ runner.workspace }}
