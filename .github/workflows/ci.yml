@@ -212,7 +212,7 @@ jobs:
             --arch=$ARCH \
             --target-os=darwin \
             --extra-cflags="-I$INSTALL_DIR/include -arch $ARCH" \
-            --extra-ldflags="-L$INSTALL_DIR/lib -arch $ARCH" \
+            --extra-ldflags="-L$INSTALL_DIR/lib -arch $ARCH -headerpad_max_install_names" \
             --prefix=$INSTALL_DIR \
             --enable-shared \
             --disable-static \
