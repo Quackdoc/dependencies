@@ -365,7 +365,7 @@ jobs:
             HOST=x86_64
           fi
 
-          ./configure --prefix="$INSTALL_DIR" --host=$HOST-apple-darwin
+          ./configure --disable-lcms --prefix="$INSTALL_DIR" --host=$HOST-apple-darwin
           make
           make install
 
