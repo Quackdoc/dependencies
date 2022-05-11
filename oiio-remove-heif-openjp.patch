@@ -1,10 +1,10 @@
 diff --git a/src/cmake/externalpackages.cmake b/src/cmake/externalpackages.cmake
-index e20f160e..84becf8b 100644
+index 83a1773f..640322c6 100644
 --- a/src/cmake/externalpackages.cmake
 +++ b/src/cmake/externalpackages.cmake
-@@ -199,15 +199,6 @@ checked_find_package (GIF
-                       RECOMMEND_MIN 5.0
-                       RECOMMEND_MIN_REASON "for stability and thread safety")
+@@ -199,15 +199,6 @@ if (ENABLE_FIELD3D)
+     endif ()
+ endif ()
  
 -# For HEIF/HEIC/AVIF formats
 -checked_find_package (Libheif VERSION_MIN 1.3
