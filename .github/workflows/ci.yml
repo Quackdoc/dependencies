@@ -392,6 +392,9 @@ jobs:
           #       so we just remove it.
           git apply $GITHUB_WORKSPACE/oiio-remove-freetype.patch
 
+          # HACK: Tries to link with system HEIF and OpenJP, which breaks arm64 cross compiles
+          git apply $GITHUB_WORKSPACE/oiio-remove-heif-openjp.patch
+
           mkdir build
           cd build
           cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DUSE_PYTHON=OFF -DCMAKE_OSX_ARCHITECTURES=$ARCH \
