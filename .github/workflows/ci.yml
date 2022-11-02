@@ -21,7 +21,7 @@ env:
   LIBRAW_VERSION: 0.20.2
   OIIO_VERSION: v2.3.19.0
   LIBPNG_VERSION: v1.6.37
-  OPENSSL_VERSION: "OpenSSL_1_1_1m"
+  OPENSSL_VERSION: "OpenSSL_1_1_1s"
   X265_VERSION: 3.5
   LIBWEBP_VERSION: v1.2.2
   LIBVPX_VERSION: v1.11.0
@@ -35,7 +35,7 @@ jobs:
       matrix:
         include:
           - arch: x86_64
-            os: macos-10.15
+            os: macos-11.0
           - arch: arm64
             os: macos-11.0
     name: macOS (${{ matrix.arch }})
@@ -50,7 +50,7 @@ jobs:
       CMAKE_OSX_ARCHITECTURES: ${{ matrix.arch }}
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Create install destination
         shell: bash
