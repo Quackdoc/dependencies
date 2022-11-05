@@ -258,6 +258,9 @@ jobs:
           ninja
           ninja install
 
+      - name: Setup upterm session
+        uses: lhotari/action-upterm@v1
+
       - name: Build OpenColorIO
         shell: bash
         working-directory: ${{ runner.workspace }}
