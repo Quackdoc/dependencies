@@ -71,10 +71,10 @@ jobs:
             done
           done
 
-      - name: Install Ninja
+      - name: Install CMake & Ninja
         shell: bash
         run: |
-          brew install ninja
+          brew install cmake ninja
 
       - name: Install NASM
         shell: bash
