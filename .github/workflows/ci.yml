@@ -60,13 +60,16 @@ jobs:
           echo "INSTALL_DIR=/opt/olive-editor" >> $GITHUB_ENV
           echo -e "/opt/olive-editor\n/opt/olive-editor/lib\n/opt/olive-editor/include\n$(cat $GITHUB_PATH)" > $GITHUB_PATH
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      #- name: Setup tmate session
+      #  uses: mxschmitt/action-tmate@v3
 
-      # HACK: Don't use pre-installed Homebrew 3.0.10 from GitHub's virtual environment
-      # Newer versions download packages from GitHub instead of Bintray which is shutting down
-      - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+      - name: Uninstall existing brew packages
+        run: |
+          while [[ `brew list | wc -l` -ne 0 ]]; do
+            for EACH in `brew list`; do
+              brew uninstall --force --ignore-dependencies $EACH
+            done
+          done
 
       - name: Install Ninja
         shell: bash
