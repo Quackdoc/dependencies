@@ -71,7 +71,7 @@ jobs:
       - name: Install Tools
         shell: bash
         run: |
-          brew install cmake ninja nasm yasm
+          brew install cmake ninja nasm yasm pkg-config
 
       - name: Build OpenSSL
         shell: bash
