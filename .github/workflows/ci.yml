@@ -60,9 +60,6 @@ jobs:
           echo "INSTALL_DIR=/opt/olive-editor" >> $GITHUB_ENV
           echo -e "/opt/olive-editor\n/opt/olive-editor/lib\n/opt/olive-editor/include\n$(cat $GITHUB_PATH)" > $GITHUB_PATH
 
-      #- name: Setup tmate session
-      #  uses: mxschmitt/action-tmate@v3
-
       - name: Uninstall existing brew packages
         run: |
           while [[ `brew list | wc -l` -ne 0 ]]; do
@@ -199,6 +196,9 @@ jobs:
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DBUILD_SHARED_LIBS=ON -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
       - name: Build FFmpeg
         shell: bash
