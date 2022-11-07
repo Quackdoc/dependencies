@@ -68,20 +68,10 @@ jobs:
             done
           done
 
-      - name: Install CMake & Ninja
+      - name: Install Tools
         shell: bash
         run: |
-          brew install cmake ninja
-
-      - name: Install NASM
-        shell: bash
-        run: |
-          brew install nasm
-
-      - name: Install Yasm
-        shell: bash
-        run: |
-          brew install yasm
+          brew install cmake ninja nasm yasm
 
       - name: Build OpenSSL
         shell: bash
@@ -197,8 +187,8 @@ jobs:
           ninja
           ninja install
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      #- name: Setup tmate session
+      #  uses: mxschmitt/action-tmate@v3
 
       - name: Build FFmpeg
         shell: bash
