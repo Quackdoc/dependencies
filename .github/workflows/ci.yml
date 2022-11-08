@@ -251,9 +251,6 @@ jobs:
           ninja
           ninja install
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Build OpenColorIO
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -445,6 +442,9 @@ jobs:
 
           # Free up space
           rm -rf qt5
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
       - name: Deploy
         shell: bash
