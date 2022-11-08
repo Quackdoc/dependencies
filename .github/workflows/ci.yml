@@ -187,9 +187,6 @@ jobs:
           ninja
           ninja install
 
-      #- name: Setup tmate session
-      #  uses: mxschmitt/action-tmate@v3
-
       - name: Build FFmpeg
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -253,6 +250,9 @@ jobs:
           cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DPYILMBASE_ENABLE=OFF -DOPENEXR_VIEWERS_ENABLE=OFF -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_PREFIX_PATH="$INSTALL_DIR"
           ninja
           ninja install
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
 
       - name: Build OpenColorIO
         shell: bash
