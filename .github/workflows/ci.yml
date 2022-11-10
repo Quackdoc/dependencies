@@ -251,9 +251,6 @@ jobs:
           ninja
           ninja install
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Build OpenColorIO
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -265,9 +262,6 @@ jobs:
           cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOCIO_BUILD_PYTHON=OFF -DOCIO_BUILD_APPS=OFF -DOCIO_BUILD_TESTS=OFF -DOCIO_BUILD_GPU_TESTS=OFF -DOCIO_BUILD_DOCS=OFF -DCMAKE_OSX_ARCHITECTURES=$ARCH -DCMAKE_PREFIX_PATH="$INSTALL_DIR"
           ninja
           ninja install
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
 
       - name: Build Boost
         shell: bash
@@ -287,9 +281,6 @@ jobs:
 
           ./b2 install address-model=64 architecture=$CPU variant=release link=shared cxxflags="-arch $ARCH" linkflags="-arch $ARCH" --prefix=$INSTALL_DIR --with-filesystem --with-system --with-thread
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Build libpng
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -303,9 +294,6 @@ jobs:
           ninja
           ninja install
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Build libjpeg-turbo
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -318,9 +306,6 @@ jobs:
           cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
 
       - name: Build libwebp
         shell: bash
@@ -343,9 +328,6 @@ jobs:
           ninja
           ninja install
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Build libtiff
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -358,9 +340,6 @@ jobs:
           cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
 
       - name: Build LibRaw
         shell: bash
@@ -382,9 +361,6 @@ jobs:
           ./configure --disable-lcms --prefix="$INSTALL_DIR" --host=$HOST-apple-darwin
           make
           make install
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
 
       - name: Build giflib
         shell: bash
