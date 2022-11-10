@@ -374,9 +374,6 @@ jobs:
           make install CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" PREFIX=$INSTALL_DIR
           install_name_tool -id @rpath/libgif.dylib $INSTALL_DIR/lib/libgif.dylib
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Build OpenImageIO
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -398,9 +395,6 @@ jobs:
           ninja
           ninja install
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-
       - name: Build OpenTimelineIO
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -417,8 +411,8 @@ jobs:
           ninja
           ninja install
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      #- name: Setup tmate session
+      #  uses: mxschmitt/action-tmate@v3
 
       - name: Build Qt
         shell: bash
@@ -451,9 +445,6 @@ jobs:
 
           # Free up space
           rm -rf qt5
-
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
 
       - name: Deploy
         shell: bash
