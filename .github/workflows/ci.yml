@@ -64,6 +64,7 @@ jobs:
         shell: cmd
         if: matrix.type == 'win'
         run: |
+          echo %GITHUB_WORKSPACE%
           mkdir "%GITHUB_WORKSPACE%/install"
           echo "INSTALL_DIR=%GITHUB_WORKSPACE%/install" >> $GITHUB_ENV
           echo "%GITHUB_WORKSPACE%/install" >> $GITHUB_PATH
