@@ -147,6 +147,7 @@ jobs:
 
           if [ "$TYPE" == "win" ]
           then
+            nasm --version
             export PATH=/c/Strawberry/perl/bin:$PATH
             perl Configure VC-WIN64A --prefix="$INSTALL_DIR" --openssldir="$INSTALL_DIR"
             # HACK: Prevent using GCC link instead of MSVC link
