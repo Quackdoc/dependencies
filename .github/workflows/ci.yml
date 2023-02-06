@@ -60,7 +60,7 @@ jobs:
 
       - name: Prepare (Windows)
         shell: bash
-        if: ${{ matrix.type }} == 'win'
+        if: matrix.type == 'win'
         run: |
           mkdir "$GITHUB_WORKSPACE/install"
           echo "INSTALL_DIR=$GITHUB_WORKSPACE/install" >> $GITHUB_ENV
@@ -68,7 +68,7 @@ jobs:
 
       - name: Prepare (macOS)
         shell: bash
-        if: ${{ matrix.type }} == 'mac'
+        if: matrix.type == 'mac'
         run: |
           # Create directories
           sudo mkdir /opt/olive-editor
@@ -88,7 +88,7 @@ jobs:
 
       - name: Build zlib (Windows)
         shell: bash
-        if: ${{ matrix.type }} == 'win'
+        if: matrix.type == 'win'
         working-directory: ${{ runner.workspace }}
         run: |
           $DOWNLOAD_TOOL https://zlib.net/zlib-$ZLIB_VERSION.tar.xz
@@ -103,7 +103,7 @@ jobs:
 
       - name: Build bzip2 (Windows)
         shell: bash
-        if: ${{ matrix.type }} == 'win'
+        if: matrix.type == 'win'
         working-directory: ${{ runner.workspace }}
         run: |
           $DOWNLOAD_TOOL https://sourceware.org/pub/bzip2/bzip2-$BZIP_VERSION.tar.gz
@@ -115,7 +115,7 @@ jobs:
 
       - name: Install NASM (Windows)
         shell: bash
-        if: ${{ matrix.type }} == 'win'
+        if: matrix.type == 'win'
         working-directory: ${{ runner.workspace }}
         run: |
           $DOWNLOAD_TOOL https://www.nasm.us/pub/nasm/releasebuilds/$NASM_VERSION/win64/nasm-$NASM_VERSION-win64.zip
@@ -126,7 +126,7 @@ jobs:
 
       - name: Install Yasm (Windows)
         shell: bash
-        if: ${{ matrix.type }} == 'win'
+        if: matrix.type == 'win'
         working-directory: ${{ runner.workspace }}
         run: |
           $DOWNLOAD_TOOL https://www.tortall.net/projects/yasm/releases/yasm-$YASM_VERSION-win64.exe
@@ -580,7 +580,7 @@ jobs:
       - name: Build Qt (Mac)
         shell: bash
         working-directory: ${{ runner.workspace }}
-        if: ${{ matrix.type }} == 'mac'
+        if: matrix.type == 'mac'
         run: |
           git clone --branch $QT_VERSION --depth 1 https://code.qt.io/qt/qt5.git
           cd qt5
