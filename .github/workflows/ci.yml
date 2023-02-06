@@ -129,8 +129,6 @@ jobs:
           cd nasm-$NASM_VERSION
           cp nasm.exe "$INSTALL_DIR/bin"
           cp nasm.exe "$INSTALL_DIR/bin/nasmw.exe"
-          echo "$INSTALL_DIR/bin"
-          ls "$INSTALL_DIR/bin"
 
       - name: Install Yasm (Windows)
         shell: bash
@@ -149,6 +147,7 @@ jobs:
 
           if [ "$TYPE" == "win" ]
           then
+            echo $PATH
             echo "$INSTALL_DIR/bin"
             ls "$INSTALL_DIR/bin"
 
