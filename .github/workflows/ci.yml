@@ -64,13 +64,12 @@ jobs:
         shell: cmd
         if: matrix.type == 'win'
         run: |
-          echo %GITHUB_WORKSPACE%
-          mkdir "%GITHUB_WORKSPACE%/install"
-          echo "INSTALL_DIR=%GITHUB_WORKSPACE%/install" >> $GITHUB_ENV
-          echo "%GITHUB_WORKSPACE%/install" >> $GITHUB_PATH
-          echo "%GITHUB_WORKSPACE%/install/bin" >> $GITHUB_PATH
-          echo "%GITHUB_WORKSPACE%/install/lib" >> $GITHUB_PATH
-          echo "%GITHUB_WORKSPACE%/install/include" >> $GITHUB_PATH
+          mkdir %GITHUB_WORKSPACE%\install
+          echo INSTALL_DIR=%GITHUB_WORKSPACE%\install >> $GITHUB_ENV
+          echo %GITHUB_WORKSPACE%\install >> $GITHUB_PATH
+          echo %GITHUB_WORKSPACE%\install\bin >> $GITHUB_PATH
+          echo %GITHUB_WORKSPACE%\install\lib >> $GITHUB_PATH
+          echo %GITHUB_WORKSPACE%\install\include >> $GITHUB_PATH
 
       - name: Enable Developer Command Prompt (Windows)
         uses: ilammy/msvc-dev-cmd@v1.12.1
