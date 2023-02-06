@@ -34,14 +34,14 @@ jobs:
     strategy:
       matrix:
         include:
-          - arch: x86_64
-            os: macos-11.0
-            type: mac
-            cflags: "-mmacosx-version-min=10.14 -arch x86_64"
-          - arch: arm64
-            os: macos-11.0
-            type: mac
-            cflags: "-mmacosx-version-min=10.14 -arch arm64"
+          #- arch: x86_64
+          #  os: macos-11.0
+          #  type: mac
+          #  cflags: "-mmacosx-version-min=10.14 -arch x86_64"
+          #- arch: arm64
+          #  os: macos-11.0
+          #  type: mac
+          #  cflags: "-mmacosx-version-min=10.14 -arch arm64"
           - arch: x86_64
             os: windows-latest
             type: win
@@ -129,6 +129,8 @@ jobs:
           cd nasm-$NASM_VERSION
           cp nasm.exe "$INSTALL_DIR/bin"
           cp nasm.exe "$INSTALL_DIR/bin/nasmw.exe"
+          echo "$INSTALL_DIR/bin"
+          ls "$INSTALL_DIR/bin"
 
       - name: Install Yasm (Windows)
         shell: bash
@@ -147,6 +149,9 @@ jobs:
 
           if [ "$TYPE" == "win" ]
           then
+            echo "$INSTALL_DIR/bin"
+            ls "$INSTALL_DIR/bin"
+
             nasm --version
             export PATH=/c/Strawberry/perl/bin:$PATH
             perl Configure VC-WIN64A --prefix="$INSTALL_DIR" --openssldir="$INSTALL_DIR"
