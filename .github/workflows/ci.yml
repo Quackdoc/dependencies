@@ -34,12 +34,14 @@ jobs:
     strategy:
       matrix:
         include:
-          #- arch: x86_64
-          #  os: macos-11.0
-          #  type: mac
-          #- arch: arm64
-          #  os: macos-11.0
-          #  type: mac
+          - arch: x86_64
+            os: macos-11.0
+            type: mac
+            cflags: "-mmacosx-version-min=10.14 -arch x86_64"
+          - arch: arm64
+            os: macos-11.0
+            type: mac
+            cflags: "-mmacosx-version-min=10.14 -arch arm64"
           - arch: x86_64
             os: windows-latest
             type: win
@@ -47,9 +49,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       ARCH: ${{ matrix.arch }}
-      CFLAGS: "-mmacosx-version-min=10.14 -arch ${{ matrix.arch }}"
-      CXXFLAGS: "-mmacosx-version-min=10.14 -arch ${{ matrix.arch }}"
-      LDFLAGS: "-mmacosx-version-min=10.14 -arch ${{ matrix.arch }}"
+      CFLAGS: ${{ matrix.cflags }}
+      CXXFLAGS: ${{ matrix.cflags }}
+      LDFLAGS: ${{ matrix.cflags }}
       MACOSX_DEPLOYMENT_TARGET: 10.14
       BUILD_TYPE: Release
       CMAKE_OSX_ARCHITECTURES: ${{ matrix.arch }}
