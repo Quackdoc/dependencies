@@ -140,6 +140,12 @@ jobs:
           $DOWNLOAD_TOOL https://www.tortall.net/projects/yasm/releases/yasm-$YASM_VERSION-win64.exe
           mv "yasm-$YASM_VERSION-win64.exe" "$INSTALL_DIR/bin/yasm.exe"
 
+      - name: Start SSH session
+        uses: luchihoratiu/debug-via-ssh@main
+        with:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+          SSH_PASS: ${{ secrets.SSH_PASS }}
+
       - name: Build OpenSSL
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -149,11 +155,6 @@ jobs:
 
           if [ "$TYPE" == "win" ]
           then
-            echo $PATH
-            echo "$INSTALL_DIR/bin"
-            ls "$INSTALL_DIR/bin"
-
-            nasm --version
             /c/Strawberry/perl/bin/perl Configure VC-WIN64A --prefix="$INSTALL_DIR" --openssldir="$INSTALL_DIR"
             # HACK: Prevent using GCC link instead of MSVC link
             mv /usr/bin/link /usr/bin/link.old
