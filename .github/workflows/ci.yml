@@ -154,8 +154,7 @@ jobs:
             ls "$INSTALL_DIR/bin"
 
             nasm --version
-            export PATH=/c/Strawberry/perl/bin:$PATH
-            perl Configure VC-WIN64A --prefix="$INSTALL_DIR" --openssldir="$INSTALL_DIR"
+            /c/Strawberry/perl/bin/perl Configure VC-WIN64A --prefix="$INSTALL_DIR" --openssldir="$INSTALL_DIR"
             # HACK: Prevent using GCC link instead of MSVC link
             mv /usr/bin/link /usr/bin/link.old
             nmake
