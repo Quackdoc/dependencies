@@ -148,7 +148,7 @@ jobs:
       - name: Build OpenSSL (Windows)
         shell: cmd
         run: |
-          git clone --branch $OPENSSL_VERSION --depth 1 https://github.com/openssl/openssl.git
+          git clone --branch %OPENSSL_VERSION% --depth 1 https://github.com/openssl/openssl.git
           cd openssl
           perl Configure VC-WIN64A --prefix=%INSTALL_DIR% --openssldir=%INSTALL_DIR%
           nmake
