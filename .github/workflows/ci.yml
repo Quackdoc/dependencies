@@ -431,7 +431,7 @@ jobs:
             CPU=x86
           fi
 
-          ./b2 install $BOOST_ARGS address-model=64 architecture=$CPU variant=release link=shared cxxflags="-arch $ARCH" linkflags="-arch $ARCH" --prefix=$INSTALL_DIR --with-filesystem --with-system --with-thread
+          ./b2 install $BOOST_ARGS address-model=64 architecture=$CPU variant=release link=shared cxxflags="$CXXFLAGS" linkflags="$LDFLAGS" --prefix=$INSTALL_DIR --with-filesystem --with-system --with-thread
 
       - name: Build libpng
         shell: bash
