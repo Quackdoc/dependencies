@@ -66,8 +66,10 @@ jobs:
         run: |
           mkdir "$GITHUB_WORKSPACE/install"
           echo "INSTALL_DIR=$GITHUB_WORKSPACE/install" >> $GITHUB_ENV
-          CYG_WORKSPACE=$(cygpath $GITHUB_WORKSPACE)
-          echo -e "$CYG_WORKSPACE/install\n$CYG_WORKSPACE/install/bin\n$CYG_WORKSPACE/install/lib\n$CYG_WORKSPACE/install/include\n$(cat $GITHUB_PATH)" > $GITHUB_PATH
+          echo "$GITHUB_WORKSPACE/install" >> $GITHUB_PATH
+          echo "$GITHUB_WORKSPACE/install\bin" >> $GITHUB_PATH
+          echo "$GITHUB_WORKSPACE/install\lib" >> $GITHUB_PATH
+          echo "$GITHUB_WORKSPACE/install\include" >> $GITHUB_PATH
 
       - name: Enable Developer Command Prompt (Windows)
         uses: ilammy/msvc-dev-cmd@v1.12.1
