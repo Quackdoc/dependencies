@@ -68,7 +68,6 @@ jobs:
           echo "INSTALL_DIR=$GITHUB_WORKSPACE/install" >> $GITHUB_ENV
           CYG_WORKSPACE=$(cygpath $GITHUB_WORKSPACE)
           echo -e "$CYG_WORKSPACE/install\n$CYG_WORKSPACE/install/bin\n$CYG_WORKSPACE/install/lib\n$CYG_WORKSPACE/install/include\n$(cat $GITHUB_PATH)" > $GITHUB_PATH
-          echo $GITHUB_PATH
 
       - name: Enable Developer Command Prompt (Windows)
         uses: ilammy/msvc-dev-cmd@v1.12.1
@@ -155,7 +154,8 @@ jobs:
 
           if [ "$TYPE" == "win" ]
           then
-            /c/Strawberry/perl/bin/perl Configure VC-WIN64A --prefix="$INSTALL_DIR" --openssldir="$INSTALL_DIR"
+            PATH=/c/Strawberry/perl/bin:$PATH
+            perl Configure VC-WIN64A --prefix="$INSTALL_DIR" --openssldir="$INSTALL_DIR"
             # HACK: Prevent using GCC link instead of MSVC link
             mv /usr/bin/link /usr/bin/link.old
             nmake
