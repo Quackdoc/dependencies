@@ -146,8 +146,10 @@ jobs:
       #    SSH_PASS: ${{ secrets.SSH_PASS }}
 
       - name: Build OpenSSL (Windows)
+        if: matrix.type == 'win'
         shell: cmd
         run: |
+          set PATH=%PATH%;C:\Strawberry\perl\bin
           git clone --branch %OPENSSL_VERSION% --depth 1 https://github.com/openssl/openssl.git
           cd openssl
           perl Configure VC-WIN64A --prefix=%INSTALL_DIR% --openssldir=%INSTALL_DIR%
@@ -155,6 +157,7 @@ jobs:
           nmake install
 
       - name: Build OpenSSL (macOS)
+        if: matrix.type == 'mac'
         shell: bash
         working-directory: ${{ runner.workspace }}
         run: |
