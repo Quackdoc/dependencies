@@ -145,27 +145,24 @@ jobs:
           NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
           SSH_PASS: ${{ secrets.SSH_PASS }}
 
-      - name: Build OpenSSL
+      - name: Build OpenSSL (Windows)
+        shell: cmd
+        run: |
+          git clone --branch $OPENSSL_VERSION --depth 1 https://github.com/openssl/openssl.git
+          cd openssl
+          perl Configure VC-WIN64A --prefix=%INSTALL_DIR% --openssldir=%INSTALL_DIR%
+          nmake
+          nmake install
+
+      - name: Build OpenSSL (macOS)
         shell: bash
         working-directory: ${{ runner.workspace }}
         run: |
           git clone --branch $OPENSSL_VERSION --depth 1 https://github.com/openssl/openssl.git
           cd openssl
-
-          if [ "$TYPE" == "win" ]
-          then
-            PATH=/c/Strawberry/perl/bin:$PATH
-            perl Configure VC-WIN64A --prefix="$INSTALL_DIR" --openssldir="$INSTALL_DIR"
-            # HACK: Prevent using GCC link instead of MSVC link
-            mv /usr/bin/link /usr/bin/link.old
-            nmake
-            nmake install
-            mv /usr/bin/link.old /usr/bin/link
-          else
-            perl Configure "darwin64-$ARCH-cc" --prefix="$INSTALL_DIR" --openssldir="$INSTALL_DIR"
-            make depend
-            make install
-          fi
+          perl Configure "darwin64-$ARCH-cc" --prefix="$INSTALL_DIR" --openssldir="$INSTALL_DIR"
+          make depend
+          make install
 
       - name: Build libx265
         shell: bash
