@@ -219,12 +219,11 @@ jobs:
 
           if [ "$TYPE" == "win" ]
           then
-            CC=cl
+            CC=cl ./configure --prefix="$INSTALL_DIR" --enable-shared --disable-cli
           else
-            HOST=$ARCH-darwin
+            ./configure --prefix="$INSTALL_DIR" --enable-shared --disable-cli --host=$ARCH-darwin
           fi
 
-          ./configure --prefix="$INSTALL_DIR" --enable-shared --disable-cli --host=$HOST
           make
           make install
 
