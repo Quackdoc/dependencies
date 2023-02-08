@@ -141,12 +141,6 @@ jobs:
           $DOWNLOAD_TOOL https://www.tortall.net/projects/yasm/releases/yasm-$YASM_VERSION-win64.exe
           mv "yasm-$YASM_VERSION-win64.exe" "$INSTALL_DIR/bin/yasm.exe"
 
-      #- name: Start SSH session
-      #  uses: luchihoratiu/debug-via-ssh@main
-      #  with:
-      #    NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-      #    SSH_PASS: ${{ secrets.SSH_PASS }}
-
       - name: Build OpenSSL (Windows)
         if: matrix.type == 'win'
         shell: cmd
@@ -410,6 +404,12 @@ jobs:
           cd ..
           rm -rf OpenColorIO
 
+      - name: Start SSH session
+        uses: luchihoratiu/debug-via-ssh@main
+        with:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+          SSH_PASS: ${{ secrets.SSH_PASS }}
+
       - name: Build Boost
         shell: bash
         working-directory: ${{ runner.workspace }}
@@ -579,9 +579,6 @@ jobs:
           cmake .. -G "Ninja" -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DOTIO_PYTHON_INSTALL=OFF -DOTIO_FIND_IMATH=ON -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
-
-      #- name: Setup tmate session
-      #  uses: mxschmitt/action-tmate@v3
 
       - name: Build Qt
         shell: cmd
