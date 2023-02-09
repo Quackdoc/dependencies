@@ -505,7 +505,6 @@ jobs:
         shell: bash
         working-directory: ${{ runner.workspace }}
         run: |
-          brew install automake libtool
           $DOWNLOAD_TOOL https://www.libraw.org/data/LibRaw-$LIBRAW_VERSION.tar.gz
           tar xzf LibRaw-$LIBRAW_VERSION.tar.gz
           cd LibRaw-$LIBRAW_VERSION
@@ -518,6 +517,7 @@ jobs:
             mkdir -p "$INSTALL_DIR/include/libraw"
             cp libraw/*.h "$INSTALL_DIR/include/libraw"
           else
+            brew install automake libtool
             autoreconf -i
 
             if [ "$ARCH" == "arm64" ]
