@@ -159,16 +159,15 @@ jobs:
           then
             $DOWNLOAD_TOOL https://sourceforge.net/p/giflib/bugs/_discuss/thread/4e811ad29b/c323/attachment/Makefile.patch
             patch Makefile Makefile.patch
+            make install CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" PREFIX=$INSTALL_DIR
+            install_name_tool -id @rpath/libgif.dylib $INSTALL_DIR/lib/libgif.dylib
           elif [ "$TYPE" == "win" ]
           then
-            PATH=$GITHUB_WORKSPACE:$PATH
-          fi
-
-          make install CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" PREFIX=$INSTALL_DIR
-
-          if [ "$TYPE" == "mac" ]
-          then
-            install_name_tool -id @rpath/libgif.dylib $INSTALL_DIR/lib/libgif.dylib
+            wget -c https://raw.githubusercontent.com/microsoft/vcpkg/master/ports/giflib/CMakeLists.txt
+            mkdir build
+            cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+            ninja
+            ninja install
           fi
 
       - name: Build OpenSSL (Windows)
