@@ -165,6 +165,7 @@ jobs:
           then
             $DOWNLOAD_TOOL https://raw.githubusercontent.com/microsoft/vcpkg/master/ports/giflib/CMakeLists.txt
             mkdir build
+            cd build
             cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
             ninja
             ninja install
