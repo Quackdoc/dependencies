@@ -155,9 +155,11 @@ jobs:
           %DOWNLOAD_TOOL% https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.gz
           tar xzf boost_1_77_0.tar.gz
           cd boost_1_77_0
-          sed -i 's/build.bat/build.bat msvc/g' bootstrap.bat
+          move C:\msys64\usr\bin\link.exe C:\msys64\usr\bin\link.exe.old
+          # sed -i 's/build.bat/build.bat msvc/g' bootstrap.bat
           cmd /c bootstrap.bat
           b2 install toolset=msvc address-model=64 variant=release link=shared --prefix="%INSTALL_DIR%" --with-filesystem --with-system --with-thread
+          move C:\msys64\usr\bin\link.exe.old C:\msys64\usr\bin\link.exe
 
       - name: Build OpenSSL (Windows)
         if: matrix.type == 'win'
