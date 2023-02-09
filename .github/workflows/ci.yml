@@ -549,6 +549,7 @@ jobs:
           make install CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" PREFIX=$INSTALL_DIR
 
           if [ "$TYPE" == "mac" ]
+          then
             install_name_tool -id @rpath/libgif.dylib $INSTALL_DIR/lib/libgif.dylib
           fi
 
