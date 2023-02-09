@@ -147,34 +147,17 @@ jobs:
           $DOWNLOAD_TOOL https://www.tortall.net/projects/yasm/releases/yasm-$YASM_VERSION-win64.exe
           mv "yasm-$YASM_VERSION-win64.exe" "$INSTALL_DIR/bin/yasm.exe"
 
-      - name: Build giflib
-        shell: bash
+      - name: Build Boost (Windows)
+        if: matrix.type == 'win'
+        shell: cmd
         working-directory: ${{ runner.workspace }}
         run: |
-          $DOWNLOAD_TOOL https://downloads.sourceforge.net/project/giflib/giflib-$GIF_VERSION.tar.gz
-          tar xzf giflib-$GIF_VERSION.tar.gz
-          cd giflib-$GIF_VERSION
-
-          if [ "$TYPE" == "mac" ]
-          then
-            $DOWNLOAD_TOOL https://sourceforge.net/p/giflib/bugs/_discuss/thread/4e811ad29b/c323/attachment/Makefile.patch
-            patch Makefile Makefile.patch
-            make install CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" PREFIX=$INSTALL_DIR
-            install_name_tool -id @rpath/libgif.dylib $INSTALL_DIR/lib/libgif.dylib
-          elif [ "$TYPE" == "win" ]
-          then
-            $DOWNLOAD_TOOL https://raw.githubusercontent.com/microsoft/vcpkg/master/ports/giflib/CMakeLists.txt
-
-            # HACK: Patch unistd.h requirement
-            $DOWNLOAD_TOOL https://raw.githubusercontent.com/microsoft/vcpkg/master/ports/giflib/msvc-guard-unistd-h.patch
-            patch gif_hash.h msvc-guard-unistd-h.patch
-
-            mkdir build
-            cd build
-            cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
-            ninja
-            ninja install
-          fi
+          %DOWNLOAD_TOOL% https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.gz
+          tar xzf boost_1_77_0.tar.gz
+          cd boost_1_77_0
+          sed -i 's/build.bat/build.bat msvc/g' bootstrap.bat
+          bootstrap.bat
+          .\b2 install toolset=msvc address-model=64 architecture=x86 variant=release link=shared --prefix=%INSTALL_DIR% --with-filesystem --with-system --with-thread
 
       - name: Build OpenSSL (Windows)
         if: matrix.type == 'win'
@@ -439,18 +422,6 @@ jobs:
           cd ..
           rm -rf OpenColorIO
 
-      - name: Build Boost (Windows)
-        if: matrix.type == 'win'
-        shell: cmd
-        working-directory: ${{ runner.workspace }}
-        run: |
-          %DOWNLOAD_TOOL% https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.gz
-          tar xzf boost_1_77_0.tar.gz
-          cd boost_1_77_0
-          sed -i 's/build.bat/build.bat msvc/g' bootstrap.bat
-          bootstrap.bat
-          b2 install toolset=msvc address-model=64 architecture=x86 variant=release link=shared --prefix=%INSTALL_DIR% --with-filesystem --with-system --with-thread
-
       - name: Build Boost (macOS)
         if: matrix.type == 'mac'
         shell: bash
@@ -529,6 +500,35 @@ jobs:
           cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
+
+      - name: Build giflib
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          $DOWNLOAD_TOOL https://downloads.sourceforge.net/project/giflib/giflib-$GIF_VERSION.tar.gz
+          tar xzf giflib-$GIF_VERSION.tar.gz
+          cd giflib-$GIF_VERSION
+
+          if [ "$TYPE" == "mac" ]
+          then
+            $DOWNLOAD_TOOL https://sourceforge.net/p/giflib/bugs/_discuss/thread/4e811ad29b/c323/attachment/Makefile.patch
+            patch Makefile Makefile.patch
+            make install CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" PREFIX=$INSTALL_DIR
+            install_name_tool -id @rpath/libgif.dylib $INSTALL_DIR/lib/libgif.dylib
+          elif [ "$TYPE" == "win" ]
+          then
+            $DOWNLOAD_TOOL https://raw.githubusercontent.com/microsoft/vcpkg/master/ports/giflib/CMakeLists.txt
+
+            # HACK: Patch unistd.h requirement
+            $DOWNLOAD_TOOL https://raw.githubusercontent.com/microsoft/vcpkg/master/ports/giflib/msvc-guard-unistd-h.patch
+            patch gif_hash.h msvc-guard-unistd-h.patch
+
+            mkdir build
+            cd build
+            cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
+            ninja
+            ninja install
+          fi
 
       - name: Build LibRaw
         shell: bash
