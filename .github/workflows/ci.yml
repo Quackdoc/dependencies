@@ -166,7 +166,7 @@ jobs:
             $DOWNLOAD_TOOL https://raw.githubusercontent.com/microsoft/vcpkg/master/ports/giflib/CMakeLists.txt
 
             # HACK: Patch unistd.h requirement
-            $DOWNLOAD_TOOL https://github.com/microsoft/vcpkg/blob/master/ports/giflib/msvc-guard-unistd-h.patch
+            $DOWNLOAD_TOOL https://raw.githubusercontent.com/microsoft/vcpkg/master/ports/giflib/msvc-guard-unistd-h.patch
             patch gif_hash.h msvc-guard-unistd-h.patch
 
             mkdir build
