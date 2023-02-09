@@ -163,7 +163,7 @@ jobs:
             install_name_tool -id @rpath/libgif.dylib $INSTALL_DIR/lib/libgif.dylib
           elif [ "$TYPE" == "win" ]
           then
-            wget -c https://raw.githubusercontent.com/microsoft/vcpkg/master/ports/giflib/CMakeLists.txt
+            $DOWNLOAD_TOOL https://raw.githubusercontent.com/microsoft/vcpkg/master/ports/giflib/CMakeLists.txt
             mkdir build
             cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE
             ninja
