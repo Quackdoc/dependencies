@@ -101,18 +101,6 @@ jobs:
       #     NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
       #     SSH_PASS: ${{ secrets.SSH_PASS }}
 
-      - name: Build Boost (Windows)
-        if: matrix.type == 'win'
-        shell: cmd
-        working-directory: ${{ runner.workspace }}
-        run: |
-          %DOWNLOAD_TOOL% https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.gz
-          tar xzf boost_1_77_0.tar.gz
-          cd boost_1_77_0
-          sed -i 's/build.bat/build.bat msvc/g' bootstrap.bat
-          bootstrap.bat
-          b2 install toolset=msvc address-model=64 architecture=x86 variant=release link=shared --prefix=%INSTALL_DIR% --with-filesystem --with-system --with-thread
-
       - name: Build zlib (Windows)
         shell: bash
         if: matrix.type == 'win'
@@ -421,6 +409,18 @@ jobs:
           ninja install
           cd ..
           rm -rf OpenColorIO
+
+      - name: Build Boost (Windows)
+        if: matrix.type == 'win'
+        shell: cmd
+        working-directory: ${{ runner.workspace }}
+        run: |
+          %DOWNLOAD_TOOL% https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.gz
+          tar xzf boost_1_77_0.tar.gz
+          cd boost_1_77_0
+          sed -i 's/build.bat/build.bat msvc/g' bootstrap.bat
+          bootstrap.bat
+          b2 install toolset=msvc address-model=64 architecture=x86 variant=release link=shared --prefix=%INSTALL_DIR% --with-filesystem --with-system --with-thread
 
       - name: Build Boost (macOS)
         if: matrix.type == 'mac'
