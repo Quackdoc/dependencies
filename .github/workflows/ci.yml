@@ -156,8 +156,8 @@ jobs:
           tar xzf boost_1_77_0.tar.gz
           cd boost_1_77_0
           sed -i 's/build.bat/build.bat msvc/g' bootstrap.bat
-          bootstrap.bat
-          .\b2 install toolset=msvc address-model=64 architecture=x86 variant=release link=shared --prefix=%INSTALL_DIR% --with-filesystem --with-system --with-thread
+          cmd /c bootstrap.bat
+          b2 install toolset=msvc address-model=64 variant=release link=shared --prefix="%INSTALL_DIR%" --with-filesystem --with-system --with-thread
 
       - name: Build OpenSSL (Windows)
         if: matrix.type == 'win'
@@ -609,7 +609,7 @@ jobs:
 
           set INCLUDE=%INCLUDE%:%INSTALL_DIR%/include
           set LIB=%LIB%:%INSTALL_DIR%/lib
-          configure.bat -opensource -confirm-license -opengl desktop -nomake examples -nomake tests -prefix "$INSTALL_DIR" -release -ssl -openssl
+          cmd /c configure.bat -opensource -confirm-license -opengl desktop -nomake examples -nomake tests -prefix "$INSTALL_DIR" -release -ssl -openssl
           nmake
           nmake install
 
