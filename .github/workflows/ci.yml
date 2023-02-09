@@ -588,13 +588,20 @@ jobs:
           ninja
           ninja install
 
-      - name: Build Qt
+      - name: Build Qt (Windows)
         shell: cmd
+        if: matrix.type == 'win'
         working-directory: ${{ runner.workspace }}
         run: |
           git clone --branch %QT_VERSION% --depth 1 https://code.qt.io/qt/qt5.git
           cd qt5
           perl init-repository --module-subset=qtbase,qttools
+
+          set INCLUDE=%INCLUDE%:%INSTALL_DIR%/include
+          set LIB=%LIB%:%INSTALL_DIR%/lib
+          configure.bat -opensource -confirm-license -opengl desktop -nomake examples -nomake tests -prefix "$INSTALL_DIR" -release -ssl -openssl
+          nmake
+          nmake install
 
           cd ..
           rm -rf qt5
@@ -608,39 +615,25 @@ jobs:
           cd qt5
           perl init-repository --module-subset=qtbase,qttools
 
-          if [ "$TYPE" == "mac" ]
+          cd qtbase
+          git apply $GITHUB_WORKSPACE/qt5-include-cgcolorspace.patch
+
+          if [ "$ARCH" == "arm64" ]
           then
-
-            cd qtbase
-            git apply $GITHUB_WORKSPACE/qt5-include-cgcolorspace.patch
-
-            if [ "$ARCH" == "arm64" ]
-            then
-              cp -R mkspecs/macx-clang mkspecs/macx-clang-arm64
-              echo "QMAKE_APPLE_DEVICE_ARCHS=arm64" >> mkspecs/macx-clang-arm64/qmake.conf
-              EXTRA_QT_ARGS="-xplatform macx-clang-arm64"
-            fi
-
-            cd ..
-
-            ./configure \
-              -opensource -confirm-license -opengl desktop -nomake examples -nomake tests \
-              -prefix "$INSTALL_DIR" -release -ssl -openssl-linked \
-              -I "$INSTALL_DIR/include" -L "$INSTALL_DIR/lib" \
-              $EXTRA_QT_ARGS
-            make
-            make install
-
-          elif [ "$TYPE" == "win" ]
-
-            INCLUDE=$INCLUDE:$INSTALL_DIR/include
-            LIB=$LIB:$INSTALL_DIR/lib
-            cmd /c configure.bat -opensource -confirm-license -opengl desktop -nomake examples -nomake tests -prefix "$INSTALL_DIR" -release -ssl -openssl
-            nmake
-            nmake install
-
+            cp -R mkspecs/macx-clang mkspecs/macx-clang-arm64
+            echo "QMAKE_APPLE_DEVICE_ARCHS=arm64" >> mkspecs/macx-clang-arm64/qmake.conf
+            EXTRA_QT_ARGS="-xplatform macx-clang-arm64"
           fi
 
+          cd ..
+
+          ./configure \
+            -opensource -confirm-license -opengl desktop -nomake examples -nomake tests \
+            -prefix "$INSTALL_DIR" -release -ssl -openssl-linked \
+            -I "$INSTALL_DIR/include" -L "$INSTALL_DIR/lib" \
+            $EXTRA_QT_ARGS
+          make
+          make install
 
           cd ..
 
