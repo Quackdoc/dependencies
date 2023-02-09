@@ -152,7 +152,7 @@ jobs:
         shell: bash
         working-directory: ${{ runner.workspace }}
         run: |
-          $DOWNLOAD_TOOL https://dl.bintray.com/boostorg/release/1.77.0/source/boost_1_77_0.tar.gz
+          $DOWNLOAD_TOOL https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.gz
           tar xzf boost_1_77_0.tar.gz
           cd boost_1_77_0
           ./bootstrap.sh
@@ -577,7 +577,7 @@ jobs:
           mkdir build
           cd build
           cmake .. -G "Ninja" -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DUSE_PYTHON=OFF -DCMAKE_OSX_ARCHITECTURES=$ARCH \
-            -DBoost_ROOT="$INSTALL_DIR" -DTIFF_ROOT="$INSTALL_DIR" -DCMAKE_PREFIX_PATH="$INSTALL_DIR" -DCMAKE_CXX_STANDARD=17
+            -Dx="$INSTALL_DIR" -DTIFF_ROOT="$INSTALL_DIR" -DCMAKE_PREFIX_PATH="$INSTALL_DIR" -DCMAKE_CXX_STANDARD=17
           ninja
           ninja install
 
