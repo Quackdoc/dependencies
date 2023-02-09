@@ -426,9 +426,9 @@ jobs:
         shell: bash
         working-directory: ${{ runner.workspace }}
         run: |
-          $DOWNLOAD_TOOL https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.gz
-          tar xzf boost_1_77_0.tar.gz
-          cd boost_1_77_0
+          $DOWNLOAD_TOOL https://boostorg.jfrog.io/artifactory/main/release/1.81.0/source/boost_1_81_0.tar.gz
+          tar xzf boost_1_81_0.tar.gz
+          cd boost_1_81_0
           ./bootstrap.sh
 
           if [ "$ARCH" == "arm64" ]
