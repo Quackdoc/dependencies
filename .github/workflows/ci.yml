@@ -95,12 +95,6 @@ jobs:
           # Install tools
           brew install cmake ninja nasm yasm pkg-config
 
-      # - name: Start SSH session
-      #   uses: luchihoratiu/debug-via-ssh@main
-      #   with:
-      #     NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-      #     SSH_PASS: ${{ secrets.SSH_PASS }}
-
       - name: Build zlib (Windows)
         shell: bash
         if: matrix.type == 'win'
@@ -146,6 +140,12 @@ jobs:
         run: |
           $DOWNLOAD_TOOL https://www.tortall.net/projects/yasm/releases/yasm-$YASM_VERSION-win64.exe
           mv "yasm-$YASM_VERSION-win64.exe" "$INSTALL_DIR/bin/yasm.exe"
+
+      - name: Start SSH session
+        uses: luchihoratiu/debug-via-ssh@main
+        with:
+          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+          SSH_PASS: ${{ secrets.SSH_PASS }}
 
       - name: Build Boost (Windows)
         if: matrix.type == 'win'
