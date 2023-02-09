@@ -541,6 +541,7 @@ jobs:
           cd giflib-$GIF_VERSION
 
           if [ "$TYPE" == "mac" ]
+          then
             $DOWNLOAD_TOOL https://sourceforge.net/p/giflib/bugs/_discuss/thread/4e811ad29b/c323/attachment/Makefile.patch
             patch Makefile Makefile.patch
           fi
