@@ -152,6 +152,14 @@ jobs:
           move C:\msys64\usr\bin\perl.exe C:\msys64\usr\bin\perl.exe.old
           perl Configure VC-WIN64A --prefix=%INSTALL_DIR% --openssldir=%INSTALL_DIR%
           nmake
+
+          # HACK: nmake install looks for pdbs that aren't actually there
+          touch libcrypto-1_1-x64.pdb
+          touch libssl-1_1-x64.pdb
+          touch engines/capi.pdb
+          touch engines/padlock.pdb
+          touch apps/openssl.pdb
+
           nmake install
           move C:\msys64\usr\bin\perl.exe.old C:\msys64\usr\bin\perl.exe
 
