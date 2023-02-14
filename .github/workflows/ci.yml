@@ -606,9 +606,9 @@ jobs:
           cd qt5
           perl init-repository --module-subset=qtbase,qttools
 
-          set INCLUDE=%INCLUDE%:%INSTALL_DIR%/include
-          set LIB=%LIB%:%INSTALL_DIR%/lib
-          cmd /c configure.bat -opensource -confirm-license -opengl desktop -nomake examples -nomake tests -prefix "$INSTALL_DIR" -release -ssl -openssl
+          set INCLUDE=%INCLUDE%;%INSTALL_DIR%\include
+          set LIB=%LIB%;%INSTALL_DIR%\lib
+          cmd /c configure.bat -opensource -confirm-license -opengl desktop -nomake examples -nomake tests -prefix "%INSTALL_DIR%" -release -ssl -openssl
           nmake
           nmake install
 
