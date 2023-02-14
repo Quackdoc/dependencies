@@ -163,11 +163,11 @@ jobs:
           nmake install
           move C:\msys64\usr\bin\perl.exe.old C:\msys64\usr\bin\perl.exe
 
-      - name: Start SSH session
-        uses: luchihoratiu/debug-via-ssh@main
-        with:
-          NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
-          SSH_PASS: ${{ secrets.SSH_PASS }}
+      # - name: Start SSH session
+      #   uses: luchihoratiu/debug-via-ssh@main
+      #   with:
+      #     NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+      #     SSH_PASS: ${{ secrets.SSH_PASS }}
 
       - name: Build OpenSSL (macOS)
         if: matrix.type == 'mac'
