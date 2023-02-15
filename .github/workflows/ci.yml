@@ -384,6 +384,7 @@ jobs:
             --enable-version3 \
             --enable-libmp3lame \
             --enable-libopus \
+            --enable-libvpx \
             --enable-libx264 \
             --enable-libx265 \
             --enable-bzlib \
