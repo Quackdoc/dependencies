@@ -34,14 +34,14 @@ jobs:
     strategy:
       matrix:
         include:
-          #- arch: x86_64
-          #  os: macos-11.0
-          #  type: mac
-          #  cflags: "-mmacosx-version-min=10.14 -arch x86_64"
-          #- arch: arm64
-          #  os: macos-11.0
-          #  type: mac
-          #  cflags: "-mmacosx-version-min=10.14 -arch arm64"
+          - arch: x86_64
+            os: macos-11.0
+            type: mac
+            cflags: "-mmacosx-version-min=10.14 -arch x86_64"
+          - arch: arm64
+            os: macos-11.0
+            type: mac
+            cflags: "-mmacosx-version-min=10.14 -arch arm64"
           - arch: x86_64
             os: windows-latest
             type: win
