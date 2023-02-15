@@ -389,7 +389,6 @@ jobs:
             --enable-libx265 \
             --enable-bzlib \
             --enable-libmodplug \
-            --enable-libsvtav1 \
             $EXTRA_FFMPEG_ARGS
           make
           make install
