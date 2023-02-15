@@ -24,7 +24,7 @@ env:
   OPENSSL_VERSION: "OpenSSL_1_1_1s"
   X265_VERSION: 3.5
   LIBWEBP_VERSION: v1.2.2
-  LIBVPX_VERSION: v1.11.0
+  LIBVPX_VERSION: v1.13.0
   PORTAUDIO_VERSION: v19.7.0
   OTIO_VERSION: "v0.15"
   MODPLUG_VERSION: b7660b1d4fdec9ead25e8716c14cf77809861656
@@ -284,7 +284,7 @@ jobs:
           if [ "$TYPE" == "win" ]
           then
             export INSTALL_DIR_ALL_FORWARD_SLASH="${INSTALL_DIR//\\//}"
-            ./configure --prefix="$INSTALL_DIR_ALL_FORWARD_SLASH" --target=x86_64-win64-vs16 --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --enable-static-msvcrt --as=yasm
+            ./configure --prefix="$INSTALL_DIR_ALL_FORWARD_SLASH" --target=x86_64-win64-vs17 --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --enable-shared --disable-static --as=yasm
             ../dependencies/make
             ../dependencies/make install
             mv "$INSTALL_DIR/lib/x64/vpxmt.lib" "$INSTALL_DIR/lib/x64/vpx.lib"
