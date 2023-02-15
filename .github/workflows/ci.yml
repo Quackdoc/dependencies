@@ -302,7 +302,7 @@ jobs:
           cd opus
           mkdir build
           cd build
-          cmake .. -G "Ninja" -DOPUS_BUILD_SHARED_LIBRARY=ON -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
+          cmake .. -G "Ninja" -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
 
