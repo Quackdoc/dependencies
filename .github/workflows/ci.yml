@@ -375,7 +375,7 @@ jobs:
             #       the version ourselves, we'll patch this out.
             sed -i 's/"SvtAv1Enc >= 0.8.4"/SvtAv1Enc/g' configure
           else
-            EXTRA_FFMPEG_ARGS="$EXTRA_FFMPEG_ARGS --target-os=darwin --arch=$ARCH --extra-cflags=\"-I$INSTALL_DIR/include -arch $ARCH\" --extra-ldflags=\"-L$INSTALL_DIR/lib -arch $ARCH -headerpad_max_install_names\""
+            EXTRA_FFMPEG_ARGS="$EXTRA_FFMPEG_ARGS --target-os=darwin --arch=$ARCH --extra-cflags='-I$INSTALL_DIR/include -arch $ARCH' --extra-ldflags='-L$INSTALL_DIR/lib -arch $ARCH -headerpad_max_install_names'"
             if [ "$ARCH" == "arm64" ]
             then
               EXTRA_FFMPEG_ARGS="$EXTRA_FFMPEG_ARGS --enable-cross-compile"
