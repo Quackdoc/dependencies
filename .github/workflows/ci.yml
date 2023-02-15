@@ -274,25 +274,25 @@ jobs:
 
           fi
 
-      - name: Build libvpx
-        shell: bash
-        working-directory: ${{ runner.workspace }}
-        run: |
-          git clone --branch $LIBVPX_VERSION --depth 1 https://chromium.googlesource.com/webm/libvpx.git
-          cd libvpx
+      # - name: Build libvpx
+      #   shell: bash
+      #   working-directory: ${{ runner.workspace }}
+      #   run: |
+      #     git clone --branch $LIBVPX_VERSION --depth 1 https://chromium.googlesource.com/webm/libvpx.git
+      #     cd libvpx
 
-          if [ "$TYPE" == "win" ]
-          then
-            export INSTALL_DIR_ALL_FORWARD_SLASH="${INSTALL_DIR//\\//}"
-            ./configure --prefix="$INSTALL_DIR_ALL_FORWARD_SLASH" --target=x86_64-win64-vs17 --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --enable-static-msvcrt --as=yasm
-            ../dependencies/make
-            ../dependencies/make install
-            mv "$INSTALL_DIR/lib/x64/vpxmt.lib" "$INSTALL_DIR/lib/x64/vpx.lib"
-          else
-            ./configure --prefix="$INSTALL_DIR" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm --target=$ARCH-darwin20-gcc
-            make
-            make install
-          fi
+      #     if [ "$TYPE" == "win" ]
+      #     then
+      #       export INSTALL_DIR_ALL_FORWARD_SLASH="${INSTALL_DIR//\\//}"
+      #       ./configure --prefix="$INSTALL_DIR_ALL_FORWARD_SLASH" --target=x86_64-win64-vs17 --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --enable-static-msvcrt --as=yasm
+      #       ../dependencies/make
+      #       ../dependencies/make install
+      #       mv "$INSTALL_DIR/lib/x64/vpxmt.lib" "$INSTALL_DIR/lib/x64/vpx.lib"
+      #     else
+      #       ./configure --prefix="$INSTALL_DIR" --disable-examples --disable-unit-tests --enable-vp9-highbitdepth --as=yasm --target=$ARCH-darwin20-gcc
+      #       make
+      #       make install
+      #     fi
 
       - name: Build libopus
         shell: bash
