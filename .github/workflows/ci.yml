@@ -384,6 +384,8 @@ jobs:
             fi
           fi
 
+          echo Extra FFmpeg args: $EXTRA_FFMPEG_ARGS
+
           ./configure \
             --extra-cflags="$EXTRA_CFLAGS"
             --extra-ldflags="$EXTRA_LDFLAGS"
