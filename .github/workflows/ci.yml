@@ -384,11 +384,9 @@ jobs:
             fi
           fi
 
-          echo Extra FFmpeg args: $EXTRA_FFMPEG_ARGS
-
           ./configure \
-            --extra-cflags="$EXTRA_CFLAGS"
-            --extra-ldflags="$EXTRA_LDFLAGS"
+            --extra-cflags="$EXTRA_CFLAGS" \
+            --extra-ldflags="$EXTRA_LDFLAGS" \
             --prefix=$INSTALL_DIR \
             --enable-shared \
             --disable-static \
