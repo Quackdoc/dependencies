@@ -216,7 +216,6 @@ jobs:
           then
             mv "$INSTALL_DIR/lib/portaudio_static_x64.lib" "$INSTALL_DIR/lib/portaudio_static.lib"
             mv "$INSTALL_DIR/lib/portaudio_x64.lib" "$INSTALL_DIR/lib/portaudio.lib"
-            mv "$INSTALL_DIR/bin/portaudio_x64.dll" "$INSTALL_DIR/bin/portaudio.dll"
           fi
 
       - name: Build libx264
