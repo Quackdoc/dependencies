@@ -43,7 +43,7 @@ jobs:
             type: mac
             cflags: "-mmacosx-version-min=10.14 -arch arm64"
           - arch: x86_64
-            os: windows-latest
+            os: windows-2019
             type: win
     name: ${{ matrix.os }} (${{ matrix.arch }})
     runs-on: ${{ matrix.os }}
