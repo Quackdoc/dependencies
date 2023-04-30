@@ -693,20 +693,18 @@ jobs:
           TRAVIS_REPO_SLUG: olive-editor/dependencies
           TRAVIS_COMMIT: ${{ github.sha }}
         run: |
-          cd $INSTALL_DIR
-          mv bin/*.lib lib/
-          mv lib/*.dll bin/
+          mv $INSTALL_DIR/bin/*.lib $INSTALL_DIR/lib/
+          mv $INSTALL_DIR/lib/*.dll $INSTALL_DIR/bin/
 
-          cd $INSTALL_DIR/..
           $DOWNLOAD_TOOL https://github.com/probonopd/uploadtool/raw/master/upload.sh
-          tar czf "olive-dep-win32-$BUILD_TYPE.tar.gz" $(cygpath "install")
+          tar czf "olive-dep-win32-$BUILD_TYPE.tar.gz" $INSTALL_DIR
           ./upload.sh "olive-dep-win32-$BUILD_TYPE.tar.gz"
 
       - name: Upload Artifact to GitHub (Windows)
         uses: actions/upload-artifact@v2
         if: github.ref == 'refs/heads/master' && matrix.type == 'win'
         with:
-          path: ${{ env.INSTALL_DIR }}/../olive-dep-win32-${{ env.BUILD_TYPE }}.tar.gz
+          path: ${{ runner.workspace }}/olive-dep-win32-${{ env.BUILD_TYPE }}.tar.gz
           name: Windows (${{ env.BUILD_TYPE }})
 
       - name: Deploy (Mac)
