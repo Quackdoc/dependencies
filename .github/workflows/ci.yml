@@ -45,6 +45,7 @@ jobs:
           - arch: x86_64
             os: windows-2019
             type: win
+            cflags: "-D_WIN32_WINNT=0x0601"
     name: ${{ matrix.os }} (${{ matrix.arch }})
     runs-on: ${{ matrix.os }}
     env:
