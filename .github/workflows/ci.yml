@@ -347,6 +347,18 @@ jobs:
           cmake .. -G Ninja -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_OSX_ARCHITECTURES=$ARCH
           ninja
           ninja install
+          
+      - name: Build Dav1d
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          git clone --depth 1 --branch 1.2.1 https://code.videolan.org/videolan/dav1d.git
+          cd dav1d
+          mkdir b
+          cd b
+          meson .. --buildtype=$BUILD_TYPE --prefix="$INSTALL_DIR" -Dc_arch=$ARCH -Denable_tests=false -Denable_docs=true -Denable_examples=true 
+          ninja
+          ninja install
 
       # - name: Start SSH session
       #   uses: luchihoratiu/debug-via-ssh@main
@@ -401,6 +413,7 @@ jobs:
             --enable-bzlib \
             --enable-libmodplug \
             --enable-libsvtav1 \
+            --enable-dav1d \
             $EXTRA_FFMPEG_ARGS
           make
           make install
