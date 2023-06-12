@@ -6,7 +6,7 @@ env:
   DOWNLOAD_TOOL: curl -fLOSs --retry 2 --retry-delay 60
 
   QT_VERSION: 5.15.2
-  ZLIB_VERSION: 1.2.13
+  ZLIB_VERSION: 1.3
   BZIP_VERSION: 1.0.8
   NASM_VERSION: 2.15.05
   YASM_VERSION: 1.3.0
@@ -71,6 +71,11 @@ jobs:
           echo "$GITHUB_WORKSPACE/install\bin" >> $GITHUB_PATH
           echo "$GITHUB_WORKSPACE/install\lib" >> $GITHUB_PATH
           echo "$GITHUB_WORKSPACE/install\include" >> $GITHUB_PATH
+          
+      - name: Prepare meson (Windows)
+        shell: bash
+        if: matrix.type == 'win'
+        run: pip3 install meson ninja
 
       - name: Enable Developer Command Prompt (Windows)
         uses: ilammy/msvc-dev-cmd@v1.12.1
@@ -87,14 +92,16 @@ jobs:
           echo -e "/opt/olive-editor\n/opt/olive-editor/lib\n/opt/olive-editor/include\n$(cat $GITHUB_PATH)" > $GITHUB_PATH
 
           # Uninstall existing brew packages
-          while [[ `brew list | wc -l` -ne 0 ]]; do
-            for EACH in `brew list`; do
-              brew uninstall --force --ignore-dependencies $EACH
-            done
-          done
+          # Temp comment out
+          #while [[ `brew list | wc -l` -ne 0 ]]; do
+          #  for EACH in `brew list`; do
+          #    brew uninstall --force --ignore-dependencies $EACH
+          #  done
+          #done
 
           # Install tools
           brew install cmake ninja nasm yasm pkg-config
+          pip3 install meson
 
       - name: Build zlib (Windows)
         shell: bash
@@ -142,6 +149,63 @@ jobs:
           $DOWNLOAD_TOOL https://www.tortall.net/projects/yasm/releases/yasm-$YASM_VERSION-win64.exe
           mv "yasm-$YASM_VERSION-win64.exe" "$INSTALL_DIR/bin/yasm.exe"
 
+      - name: Build Dav1d
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          git clone https://code.videolan.org/videolan/dav1d.git
+          cd dav1d
+          mkdir build
+          #ranlib -version
+          #ls /usr/bin
+
+          if [ "$TYPE" == "win" ]
+          then
+            # HACK: Prevent using GCC link instead of MSVC link
+            mv /usr/bin/link /usr/bin/link.old
+            # CC_LD=$VCToolsInstallDir\bin\Hostx86\x86\link.exe 
+            meson setup build --buildtype=release --prefix=\\ -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+            ninja -C build
+            DESTDIR="$INSTALL_DIR" ninja -C build install
+            mv /usr/bin/link.old /usr/bin/link
+            
+          elif [ "$ARCH" == "arm64" ]
+          then
+            #
+          cat > arm-osx.txt <<EndOfFile
+          [binaries]
+          c = '/usr/bin/clang'
+          cpp = '/usr/bin/clang++'
+          ar = '/usr/bin/ar'
+          strip = '/usr/bin/strip'
+          cld = '/usr/bin/ld64'
+          cppldd = '/usr/bin/ld64'
+          [properties]
+          skip_sanity_check = true
+          [host_machine]
+          system = 'darwin'
+          cpu_family = 'arm64'
+          cpu = 'arm64'
+          endian = 'little'
+          [built-in options]
+          c_args = ['-arch', 'arm64', '-target', 'arm64-apple-macos10.14' ]
+          cpp_args = ['-arch', 'arm64', '-target', 'arm64-apple-macos10.14']
+          c_link_args = ['-arch', 'arm64', '-mmacosx-version-min=10.14']
+          cpp_link_args = ['-arch', 'arm64', '-mmacosx-version-min=10.14']
+          EndOfFile
+            #unset CFLAGS 
+            meson setup build --buildtype=release --prefix=/ -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
+            ninja -C build
+            DESTDIR="$INSTALL_DIR" ninja -C build install
+            
+          else
+            # osx doesn't support ${BUILD_TYPE,,} substitution, try $(echo $BUILD_TYPE | tr '[:upper:]' '[:lower:]') later
+            meson setup build --buildtype=release --prefix=/ -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+            ninja -C build
+            DESTDIR="$INSTALL_DIR" ninja -C build install
+          fi
+
+          
       - name: Build OpenSSL (Windows)
         if: matrix.type == 'win'
         shell: cmd
@@ -374,6 +438,7 @@ jobs:
             #       and therefore fails to find ">=.pc". Since we can guarantee
             #       the version ourselves, we'll patch this out.
             sed -i 's/"SvtAv1Enc >= 0.8.4"/SvtAv1Enc/g' configure
+            sed -i 's/"dav1d >= 0.5.0"/dav1d/g' configure
           else
             EXTRA_CFLAGS="-I$INSTALL_DIR/include -arch $ARCH"
             EXTRA_LDFLAGS="-L$INSTALL_DIR/lib -arch $ARCH -headerpad_max_install_names"
@@ -401,6 +466,7 @@ jobs:
             --enable-bzlib \
             --enable-libmodplug \
             --enable-libsvtav1 \
+            --enable-libdav1d \
             $EXTRA_FFMPEG_ARGS
           make
           make install
