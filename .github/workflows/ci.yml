@@ -158,15 +158,21 @@ jobs:
           if [ "$TYPE" == "win" ]
           then
             # HACK: Prevent using GCC link instead of MSVC link
-            # mv /usr/bin/link /usr/bin/link.old
-            CC_LD=$VCToolsInstallDir\bin\Hostx86\x86\link.exe meson setup build --buildtype=${BUILD_TYPE,,} --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
-            # mv /usr/bin/link.old /usr/bin/link
+            mv /usr/bin/link /usr/bin/link.old
+            # CC_LD=$VCToolsInstallDir\bin\Hostx86\x86\link.exe 
+            meson setup build --buildtype=${BUILD_TYPE,,} --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+            ninja -C build
+            ninja -C build install
+            mv /usr/bin/link.old /usr/bin/link
           else 
             meson setup build --buildtype=${BUILD_TYPE,,} --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+            ninja -C build
+            ninja -C build install
           fi
           
-          ninja -C build
-          ninja ninja -C build install
+          # meson setup build --buildtype=${BUILD_TYPE,,} --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+          # ninja -C build
+          # ninja -C build install
 
           
       - name: Build OpenSSL (Windows)
