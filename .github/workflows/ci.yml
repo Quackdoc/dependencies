@@ -116,17 +116,6 @@ jobs:
           ninja install
           touch "$INSTALL_DIR/include/unistd.h" # HACK
 
-      - name: Build Dav1d
-        shell: bash
-        working-directory: ${{ runner.workspace }}
-        run: |
-          git clone https://code.videolan.org/videolan/dav1d.git
-          cd dav1d
-          mkdir build
-          CC_LD=$VCToolsInstallDir/bin/Hostx86/x86/link.exe meson setup build --buildtype=${BUILD_TYPE,,} --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
-          ninja -C build
-          ninja ninja -C build install
-
       - name: Build bzip2 (Windows)
         shell: bash
         if: matrix.type == 'win'
@@ -158,6 +147,29 @@ jobs:
           $DOWNLOAD_TOOL https://www.tortall.net/projects/yasm/releases/yasm-$YASM_VERSION-win64.exe
           mv "yasm-$YASM_VERSION-win64.exe" "$INSTALL_DIR/bin/yasm.exe"
 
+      - name: Build Dav1d
+        shell: bash
+        working-directory: ${{ runner.workspace }}
+        run: |
+          git clone https://code.videolan.org/videolan/dav1d.git
+          cd dav1d
+          mkdir build
+
+          if [ "$TYPE" == "win" ]
+          then
+            # HACK: Prevent using GCC link instead of MSVC link
+            mv /usr/bin/link /usr/bin/link.old
+            meson setup build --buildtype=${BUILD_TYPE,,} --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+            mv /usr/bin/link.old /usr/bin/link
+          else 
+          meson setup build --buildtype=${BUILD_TYPE,,} --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+          fi
+          
+          meson setup build --buildtype=${BUILD_TYPE,,} --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+          ninja -C build
+          ninja ninja -C build install
+
+          
       - name: Build OpenSSL (Windows)
         if: matrix.type == 'win'
         shell: cmd
