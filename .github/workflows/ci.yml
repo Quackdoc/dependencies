@@ -108,7 +108,7 @@ jobs:
           git clone https://code.videolan.org/videolan/dav1d.git
           cd dav1d
           mkdir build
-          meson setup build --buildtype=$BUILD_TYPE --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+          meson setup build --buildtype=${BUILD_TYPE,,}E --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
           ninja -C build
           ninja ninja -C build install
 
