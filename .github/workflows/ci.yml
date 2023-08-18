@@ -73,11 +73,9 @@ jobs:
           echo "$GITHUB_WORKSPACE/install\include" >> $GITHUB_PATH
           
       - name: Prepare meson (Windows)
+        shell: bash
         if: matrix.type == 'win'
-        uses: actions/setup-python@v1
-        with:
-          python-version: '3.x'
-      - run: pip install meson ninja
+        run: pip3 install meson ninja
 
       - name: Enable Developer Command Prompt (Windows)
         uses: ilammy/msvc-dev-cmd@v1.12.1
