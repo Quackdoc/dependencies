@@ -180,7 +180,7 @@ jobs:
           cld = '/usr/bin/ld64'
           cppldd = '/usr/bin/ld64'
           [properties]
-          needs_exe_wrapper = true
+          skip_sanity_check = true
           [host_machine]
           system = 'darwin'
           cpu_family = 'arm64'
@@ -192,8 +192,8 @@ jobs:
           c_link_args = ['-D__ARM_ARCH__']
           cpp_link_args = ['-D__ARM_ARCH__']
           EndOfFile
-             
-            CFLAGS="-arch arm64 -target arm64-apple-macos11" meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
+            #unset CFLAGS 
+            meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
             ninja -C build install
             
           else
