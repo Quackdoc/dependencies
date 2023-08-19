@@ -179,7 +179,7 @@ jobs:
           [built-in options]
           c_args = ['-arch', 'arm64']
           cpp_args = ['-arch', 'arm64']
-          cc_link_args = ['-D__ARM_ARCH__']
+          c_link_args = ['-D__ARM_ARCH__']
           cpp_link_args = ['-D__ARM_ARCH__']
           EndOfFile
              
