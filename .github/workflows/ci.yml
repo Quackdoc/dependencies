@@ -181,11 +181,11 @@ jobs:
           cpu = 'aarch64'
           endian = 'little'
 
-          [binaries]
-          c = 'clang -target=x86_64-apple-darwin'
-          cpp = 'clang++ -target=x86_64-apple-darwin'
-          ar = 'ar'
-          strip = 'strip'
+		      [binaries]
+		      c = ['clang', '-arch', 'arm64', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk']
+		      cpp = ['clang++', '-arch', 'arm64', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk']
+		      ar = 'ar'
+		      strip = 'strip'
           
           EndOfFile
           
