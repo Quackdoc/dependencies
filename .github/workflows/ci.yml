@@ -173,8 +173,8 @@ jobs:
           [binaries]
           c = 'clang'
           cpp = 'clang++'
-          ar = 'ar'
-          strip = 'strip'
+          ar = '/usr/bin/ar'
+          strip = '/usr/bin/strip'
           [properties]
           skip_sanity_check = true
           [host_machine]
