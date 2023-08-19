@@ -164,7 +164,7 @@ jobs:
             # HACK: Prevent using GCC link instead of MSVC link
             mv /usr/bin/link /usr/bin/link.old
             # CC_LD=$VCToolsInstallDir\bin\Hostx86\x86\link.exe 
-            meson setup build --buildtype=${BUILD_TYPE,,} --prefix="D:\a\dependencies\dependencies\install\" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+            meson setup build --buildtype=${BUILD_TYPE,,} --prefix="D:/\a/\dependencies/\dependencies/\install/\" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
             ninja -C build
             ninja -C build install
             mv /usr/bin/link.old /usr/bin/link
