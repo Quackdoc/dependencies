@@ -157,6 +157,7 @@ jobs:
           cd dav1d
           mkdir build
           ranlib --version
+          ls /usr/bin
 
           if [ "$TYPE" == "win" ]
           then
