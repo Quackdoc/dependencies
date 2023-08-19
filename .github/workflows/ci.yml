@@ -180,7 +180,7 @@ jobs:
           cld = '/usr/bin/ld64'
           cppldd = '/usr/bin/ld64'
           [properties]
-          skip_sanity_check = true
+          needs_exe_wrapper = true
           [host_machine]
           system = 'darwin'
           cpu_family = 'arm64'
