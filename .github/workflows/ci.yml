@@ -37,7 +37,7 @@ jobs:
           - arch: x86_64
             os: macos-11.0
             type: mac
-            cflags: "-mmacosx-version-min=10.14 -arch x86_64"
+            cflags: "-mmacosx-version-min=11 -arch x86_64"
           - arch: arm64
             os: macos-11.0
             type: mac
@@ -53,7 +53,7 @@ jobs:
       CFLAGS: ${{ matrix.cflags }}
       CXXFLAGS: ${{ matrix.cflags }}
       LDFLAGS: ${{ matrix.cflags }}
-      MACOSX_DEPLOYMENT_TARGET: 10.14
+      MACOSX_DEPLOYMENT_TARGET: 11
       BUILD_TYPE: Release
       CMAKE_OSX_ARCHITECTURES: ${{ matrix.arch }}
       TYPE: ${{ matrix.type }}
