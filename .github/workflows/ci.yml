@@ -156,6 +156,7 @@ jobs:
           git clone https://code.videolan.org/videolan/dav1d.git
           cd dav1d
           mkdir build
+          ranlib --version
 
           if [ "$TYPE" == "win" ]
           then
