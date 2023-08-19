@@ -188,8 +188,7 @@ jobs:
           endian = 'little'
           EndOfFile
           
-            CFLAGS=“-arch $ARCH” meson setup build --buildtype=release --prefix="$INSTALL_DIR" \
-            -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
+            meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
             ninja -C build
             ninja -C build install
             
