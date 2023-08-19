@@ -92,11 +92,12 @@ jobs:
           echo -e "/opt/olive-editor\n/opt/olive-editor/lib\n/opt/olive-editor/include\n$(cat $GITHUB_PATH)" > $GITHUB_PATH
 
           # Uninstall existing brew packages
-          while [[ `brew list | wc -l` -ne 0 ]]; do
-            for EACH in `brew list`; do
-              brew uninstall --force --ignore-dependencies $EACH
-            done
-          done
+          # Temp cmment out
+          #while [[ `brew list | wc -l` -ne 0 ]]; do
+          #  for EACH in `brew list`; do
+          #    brew uninstall --force --ignore-dependencies $EACH
+          #  done
+          #done
 
           # Install tools
           brew install cmake ninja nasm yasm pkg-config
@@ -169,6 +170,11 @@ jobs:
           then
             
           cat > arm-osx.txt <<EndOfFile
+          [binaries]
+          c = 'clang'
+          cpp = 'clang++'
+          ar = 'ar'
+          strip = 'strip'
           [properties]
           skip_sanity_check = true
           [host_machine]
