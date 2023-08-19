@@ -170,8 +170,12 @@ jobs:
           then
 
           cat > arm-osx.txt <<EndOfFile
-
-          
+          [binaries]
+          c = 'clang'
+          cpp = 'clang++'
+          ar = 'ar'
+          strip = 'strip'
+	  
           [properties]
           skip_sanity_check = true
           
@@ -180,16 +184,15 @@ jobs:
           cpu_family = 'aarch64'
           cpu = 'aarch64'
           endian = 'little'
-
-		      [binaries]
-		      c = ['clang', '-arch', 'arm64', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk']
-		      cpp = ['clang++', '-arch', 'arm64', '-isysroot', '/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk']
-		      ar = 'ar'
-		      strip = 'strip'
-          
+	  
+	  [built-in options]
+	  c_args = ['-arch', 'arm64']
+	  cpp_args = ['-arch', 'arm64']
+	  cc_link_args = ['-D__ARM_ARCH__']
+	  cpp_link_args = ['-D__ARM_ARCH__']
           EndOfFile
           
-            CFLAGS="-arch arm64"  meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
+            CFLAGS="-arch arm64" meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
             ninja -C build install
             
           else
