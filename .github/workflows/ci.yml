@@ -148,9 +148,8 @@ jobs:
           $DOWNLOAD_TOOL https://www.tortall.net/projects/yasm/releases/yasm-$YASM_VERSION-win64.exe
           mv "yasm-$YASM_VERSION-win64.exe" "$INSTALL_DIR/bin/yasm.exe"
 
-      - name: Build Dav1d (only windows for now)
+      - name: Build Dav1d
         shell: bash
-        if: matrix.type == 'win'
         working-directory: ${{ runner.workspace }}
         run: |
           git clone https://code.videolan.org/videolan/dav1d.git
