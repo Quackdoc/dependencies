@@ -99,7 +99,7 @@ jobs:
           done
 
           # Install tools
-          brew install python3 cmake ninja nasm yasm pkg-config
+          brew install cmake ninja nasm yasm pkg-config
           pip3 install meson
 
       - name: Build zlib (Windows)
