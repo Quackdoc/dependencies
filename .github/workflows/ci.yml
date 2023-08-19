@@ -92,7 +92,7 @@ jobs:
           echo -e "/opt/olive-editor\n/opt/olive-editor/lib\n/opt/olive-editor/include\n$(cat $GITHUB_PATH)" > $GITHUB_PATH
 
           # Uninstall existing brew packages
-          # Temp cmment out
+          # Temp comment out
           #while [[ `brew list | wc -l` -ne 0 ]]; do
           #  for EACH in `brew list`; do
           #    brew uninstall --force --ignore-dependencies $EACH
@@ -193,15 +193,15 @@ jobs:
           cpp_link_args = ['-arch', 'arm64', '-mmacosx-version-min=10.14']
           EndOfFile
             #unset CFLAGS 
-            meson setup build --buildtype=release -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
+            meson setup build --buildtype=release --prefix=/usr -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
             ninja -C build
             DESTDIR="$INSTALL_DIR" ninja -C build install
             
           else
             # osx doesn't support ${BUILD_TYPE,,} substitution, try $(echo $BUILD_TYPE | tr '[:upper:]' '[:lower:]') later
-            meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+            meson setup build --buildtype=release --prefix=/usr -Denable_tests=false -Denable_docs=false -Denable_examples=false 
             ninja -C build
-            ninja -C build install
+            DESTDIR="$INSTALL_DIR" ninja -C build install
           fi
           
           # meson setup build --buildtype=${BUILD_TYPE,,} --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
