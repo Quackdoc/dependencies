@@ -41,7 +41,7 @@ jobs:
           - arch: arm64
             os: macos-11.0
             type: mac
-            cflags: "-mmacosx-version-min=10.14 -arch arm64"
+            cflags: "-mmacosx-version-min=11 -arch arm64"
           - arch: x86_64
             os: windows-2019
             type: win
@@ -187,8 +187,8 @@ jobs:
           cpu = 'arm64'
           endian = 'little'
           [built-in options]
-          c_args = ['-arch', 'arm64' ]
-          cpp_args = ['-arch', 'arm64']
+          c_args = ['-arch', 'arm64', '-target', 'arm64-apple-macos11' ]
+          cpp_args = ['-arch', 'arm64', '-target', 'arm64-apple-macos11']
           c_link_args = ['-D__ARM_ARCH__']
           cpp_link_args = ['-D__ARM_ARCH__']
           EndOfFile
