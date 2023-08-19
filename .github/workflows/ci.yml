@@ -175,6 +175,8 @@ jobs:
           cpp = 'clang++'
           ar = '/usr/bin/ar'
           strip = '/usr/bin/strip'
+          c_ld = 'lld'
+          cpp_ldd = 'ldd'
           [properties]
           skip_sanity_check = true
           [host_machine]
