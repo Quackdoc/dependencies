@@ -461,7 +461,7 @@ jobs:
             --enable-bzlib \
             --enable-libmodplug \
             --enable-libsvtav1 \
-            --enable-dav1d \
+            --enable-libdav1d \
             $EXTRA_FFMPEG_ARGS
           make
           make install
