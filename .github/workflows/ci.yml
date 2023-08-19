@@ -169,11 +169,6 @@ jobs:
           then
             
           cat > arm-osx.txt <<EndOfFile
-          [binaries]
-          c = 'clang'
-          cpp = 'clang++'
-          ar = 'ar'
-          strip = 'strip'
           [properties]
           skip_sanity_check = true
           [host_machine]
