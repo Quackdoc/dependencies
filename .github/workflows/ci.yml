@@ -168,8 +168,19 @@ jobs:
             
           elif [ "$ARCH" == "arm64" ]
           then
+
+          cat > arm-osx.txt <<EndOfFile
+          [properties]
+          skip_sanity_check = true
+         
+          [host_machine]
+          system = 'darwin'
+          cpu_family = 'aarch64'
+          cpu = 'aarch64'
+          endian = 'little'
+          EndOfFile
           
-            meson setup build -Dc_args="-arch arm64" -Dc_link_args="-arch arm64" -Dskip_sanity_check=true --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false
+            meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
             ninja -C build install
             
           else
