@@ -169,8 +169,7 @@ jobs:
           elif [ "$ARCH" == "arm64" ]
           then
           
-            meson setup build -Dc_args="-arch arm64" -Dc_link_args="-arch arm64" --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
-            ninja -C build
+            meson setup build -Dc_args="-arch arm64" -Dc_link_args="-arch arm64" --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false
             ninja -C build install
             
           else
