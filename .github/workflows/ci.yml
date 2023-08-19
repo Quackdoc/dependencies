@@ -161,13 +161,12 @@ jobs:
 
           if [ "$TYPE" == "win" ]
           then
-            export INSTALL_DIR_ALL_FORWARD_SLASH="${INSTALL_DIR//\\//}"
             # HACK: Prevent using GCC link instead of MSVC link
             mv /usr/bin/link /usr/bin/link.old
             # CC_LD=$VCToolsInstallDir\bin\Hostx86\x86\link.exe 
-            meson setup build --buildtype=release --prefix=$INSTALL_DIR_ALL_FORWARD_SLASH -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+            meson setup build --buildtype=release --prefix=\\ -Denable_tests=false -Denable_docs=false -Denable_examples=false 
             ninja -C build
-            ninja -C build install
+            DESTDIR="$INSTALL_DIR" ninja -C build install
             mv /usr/bin/link.old /usr/bin/link
             
           elif [ "$ARCH" == "arm64" ]
