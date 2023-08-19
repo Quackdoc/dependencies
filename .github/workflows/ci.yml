@@ -167,7 +167,7 @@ jobs:
             mv /usr/bin/link.old /usr/bin/link
           elif [ "$ARCH" == "arm64" ]
           then
-	  
+            
           cat > arm-osx.txt <<EndOfFile
           [binaries]
           c = 'clang'
@@ -187,7 +187,7 @@ jobs:
           cc_link_args = ['-D__ARM_ARCH__']
           cpp_link_args = ['-D__ARM_ARCH__']
           EndOfFile
-	  
+             
             CFLAGS="-arch arm64" meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
             ninja -C build install
             
