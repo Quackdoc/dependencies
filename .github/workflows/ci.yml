@@ -171,8 +171,8 @@ jobs:
             
           cat > arm-osx.txt <<EndOfFile
           [binaries]
-          c = 'clang'
-          cpp = 'clang++'
+          c = '/usr/bin/clang -target aarch64-apple-darwin'
+          cpp = '/usr/bin/clang++ -target aarch64-apple-darwin'
           ar = '/usr/bin/ar'
           strip = '/usr/bin/strip'
           cld = '/usr/bin/ld64'
