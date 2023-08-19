@@ -165,9 +165,11 @@ jobs:
             ninja -C build
             ninja -C build install
             mv /usr/bin/link.old /usr/bin/link
+            
           elif [ "$ARCH" == "arm64" ]
           then
-            cat > /tmp/arm-osx.txt <<EOF
+          
+            cat > arm-osx.txt <<EndOfFile
             [binaries]
             c = 'arm-apple-darwin20-clang'
             cpp = 'arm-apple-darwin20-clang++'
@@ -184,12 +186,13 @@ jobs:
             cpu_family = 'arm'
             cpu = 'arm64'
             endian = 'little'
-            EOF
+            EndOfFile
           
             CFLAGS=“-arch $ARCH” meson setup build --buildtype=release --prefix="$INSTALL_DIR" \
-            -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=/tmp/arm-osx.txt
+            -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
             ninja -C build
             ninja -C build install
+            
           else
             # osx doesn't support ${BUILD_TYPE,,} substitution, try $(echo $BUILD_TYPE | tr '[:upper:]' '[:lower:]') later
             meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
