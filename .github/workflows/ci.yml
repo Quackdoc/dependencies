@@ -189,8 +189,8 @@ jobs:
           [built-in options]
           c_args = ['-arch', 'arm64', '-target', 'arm64-apple-macos11' ]
           cpp_args = ['-arch', 'arm64', '-target', 'arm64-apple-macos11']
-          c_link_args = ['-D__ARM_ARCH__']
-          cpp_link_args = ['-D__ARM_ARCH__']
+          c_link_args = ['-arch', 'arm64', '-mmacosx-version-min=11.0']
+          cpp_link_args = ['-arch', 'arm64', '-mmacosx-version-min=11.0']
           EndOfFile
             #unset CFLAGS 
             meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
