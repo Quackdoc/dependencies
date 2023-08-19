@@ -439,6 +439,7 @@ jobs:
             #       and therefore fails to find ">=.pc". Since we can guarantee
             #       the version ourselves, we'll patch this out.
             sed -i 's/"SvtAv1Enc >= 0.8.4"/SvtAv1Enc/g' configure
+            sed -i 's/"dav1d >= 0.5.0"/dav1d/g' configure
           else
             EXTRA_CFLAGS="-I$INSTALL_DIR/include -arch $ARCH"
             EXTRA_LDFLAGS="-L$INSTALL_DIR/lib -arch $ARCH -headerpad_max_install_names"
