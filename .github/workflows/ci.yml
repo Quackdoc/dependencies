@@ -167,10 +167,16 @@ jobs:
             mv /usr/bin/link.old /usr/bin/link
           else 
             # osx doesn't support ${BUILD_TYPE,,} substitution, try $(echo $BUILD_TYPE | tr '[:upper:]' '[:lower:]') later
-            meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+            if [ "$ARCH" == "arm64" ]
+              CFLAGS=“-arch arm64” meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+            else
+              meson setup build --buildtype=release --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
+            fi
             ninja -C build
             ninja -C build install
           fi
+
+          
           
           # meson setup build --buildtype=${BUILD_TYPE,,} --prefix="$INSTALL_DIR" -Denable_tests=false -Denable_docs=false -Denable_examples=false 
           # ninja -C build
