@@ -182,10 +182,10 @@ jobs:
           endian = 'little'
 
           [binaries]
-          c = 'aarch64-apple-darwin21-clang'
-          cpp = 'aarch64-apple-darwin21-clang++'
-          ar = 'aarch64-apple-darwin21-ar'
-          strip = 'aarch64-apple-darwin21-strip'
+          c = 'clang -target=x86_64-apple-darwin'
+          cpp = 'clang++ -target=x86_64-apple-darwin'
+          ar = 'ar'
+          strip = 'strip'
           
           EndOfFile
           
