@@ -157,7 +157,7 @@ jobs:
           cd dav1d
           mkdir build
           #ranlib -version
-          ls /usr/bin
+          #ls /usr/bin
 
           if [ "$TYPE" == "win" ]
           then
@@ -187,8 +187,8 @@ jobs:
           cpu = 'aarch64'
           endian = 'little'
           [built-in options]
-          c_args = ['-arch', 'arm64', '-target', 'arm64-apple-macos11']
-          cpp_args = ['-arch', 'arm64', '-target', 'arm64-apple-macos11']
+          c_args = ['-arch', 'arm64', '-target', 'arm64-apple-macos10.14']
+          cpp_args = ['-arch', 'arm64', '-target', 'arm64-apple-macos10.14']
           c_link_args = ['-D__ARM_ARCH__']
           cpp_link_args = ['-D__ARM_ARCH__']
           EndOfFile
