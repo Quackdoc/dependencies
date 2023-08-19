@@ -170,23 +170,23 @@ jobs:
           then
           
             cat > arm-osx.txt <<EndOfFile
-[binaries]
-c = 'arm-apple-darwin20-clang'
-cpp = 'arm-apple-darwin20-clang++'
-ar = 'arm-apple-darwin20-ar'
-strip = 'arm-apple-darwin20-strip'
+          [binaries]
+          c = 'arm-apple-darwin20-clang'
+          cpp = 'arm-apple-darwin20-clang++'
+          ar = 'arm-apple-darwin20-ar'
+          strip = 'arm-apple-darwin20-strip'
 
-[properties]
-sys_root = '/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk'
-c_args = ['-arch', 'arm64', '-isysroot', sys_root]
-cpp_args = ['-arch', 'arm64', '-isysroot', sys_root]
+          [properties]
+          sys_root = '/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk'
+          c_args = ['-arch', 'arm64', '-isysroot', sys_root]
+          cpp_args = ['-arch', 'arm64', '-isysroot', sys_root]
 
-[host_machine]
-system = 'darwin'
-cpu_family = 'arm'
-cpu = 'arm64'
-endian = 'little'
-EndOfFile
+          [host_machine]
+          system = 'darwin'
+          cpu_family = 'arm'
+          cpu = 'arm64'
+          endian = 'little'
+          EndOfFile
           
             CFLAGS=“-arch $ARCH” meson setup build --buildtype=release --prefix="$INSTALL_DIR" \
             -Denable_tests=false -Denable_docs=false -Denable_examples=false --cross-file=arm-osx.txt
